@@ -4,7 +4,7 @@
     "type": "street",
     "lat": 46.05110,
     "lng": 14.50510,
-    "status": "cleared",
+    "size": "big",
     "reported_at": "2025-04-17T10:15:00Z"
   },
   {
@@ -12,7 +12,7 @@
     "type": "street",
     "lat": 46.23910,
     "lng": 15.26700,
-    "status": "active",
+    "size": "small",
     "reported_at": "2025-04-18T07:30:00Z"
   },
   {
@@ -20,7 +20,7 @@
     "type": "railroad",
     "lat": 45.55400,
     "lng": 13.73000,
-    "status": "active",
+    "size": "small",
     "reported_at": "2025-04-18T09:45:00Z"
   },
   {
@@ -28,7 +28,7 @@
     "type": "railroad",
     "lat": 46.56000,
     "lng": 15.64590,
-    "status": "closed",
+    "size": "big",
     "reported_at": "2025-04-19T12:05:00Z"
   },
   {
@@ -36,7 +36,7 @@
     "type": "railroad",
     "lat": 46,
     "lng": 15,
-    "status": "cleared",
+    "size": "big",
     "reported_at": "2025-04-19T12:05:00Z"
   }
 ]

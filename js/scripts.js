@@ -40,7 +40,7 @@ function initStreetMap() {
                         .bindPopup(`
              <strong>${s.id}</strong><br/>
              Type: ${s.type}<br/>
-             Status: ${s.status}<br/>
+             Size: ${s.size}<br/>
              Reported: ${new Date(s.reported_at).toLocaleString()}
            `)
                         .addTo(streetMap);
