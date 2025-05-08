@@ -28,6 +28,7 @@ app.post('/update/upcoming', (req, res) => {
     //const slides = require('./lastmessage.json');
     //const json = res.json(slides);
     //res.send(json[0].data)
+    console.log(res.json)
     res.send('hello post')
 })
 
