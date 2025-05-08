@@ -15,9 +15,15 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/update/:id', (req, res) => {
-    const { id } = req.params;
-    res.send(`Great record ${id} have been updated.`)
+app.get('/update', (req, res) => {
+    //delete require.cache[require.resolve('./lastmessage.json')];
+    //const slides = require('./lastmessage.json');
+    //const json = res.json(slides);
+    //res.send(json[0].data)
+})
+
+app.post('/update/upcoming', (req, res) => {
+    console.log(res.json)
 })
 
 // Setting up local host distribution
@@ -76,7 +82,7 @@ app.post('/api/subscribe', (req, res) => {
     });*/
 });
 
-// Local host 3000
-app.listen(3000, () =>
-    console.log('Server listening on http://localhost:3000')
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () =>
+    console.log(`Server listening on port ${PORT}`)
 );
