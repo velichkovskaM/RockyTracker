@@ -1,4 +1,14 @@
 ﻿
+const { Pool } = require('pg');
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
+
 // Email content parser function
 const express    = require('express');
 const bodyParser = require('body-parser');
@@ -90,6 +100,18 @@ app.post('/api/subscribe', (req, res) => {
         }
     });*/
 });
+
+(async () => {
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS subscriptions (
+            id SERIAL PRIMARY KEY,
+            email TEXT UNIQUE NOT NULL,
+            subscribed TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    `);
+    console.log('Table created');
+    process.exit();
+})();
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
