@@ -24,11 +24,7 @@ app.get('/update/upcoming', (req, res) => {
 })
 
 app.post('/update/upcoming', (req, res) => {
-    //delete require.cache[require.resolve('./lastmessage.json')];
-    //const slides = require('./lastmessage.json');
-    //const json = res.json(slides);
-    //res.send(json[0].data)
-    console.log(res.json.toString())
+    console.log(req.body)
     res.send('hello post')
 })
 
