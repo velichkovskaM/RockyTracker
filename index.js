@@ -25,7 +25,7 @@ app.get('/update/upcoming', (req, res) => {
 
 app.post('/update/upcoming', (req, res) => {
     console.log(req.body)
-    console.log(JSON.parse(req.body).uplink_message.decoded_payload)
+    console.log(req.body.uplink_message.decoded_payload)
     res.send('hello post')
 })
 
