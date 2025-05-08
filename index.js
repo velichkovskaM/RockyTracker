@@ -6,6 +6,8 @@ const nodemailer = require('nodemailer');
 //const sqlite3    = require('sqlite3').verbose();
 const path       = require('path');
 
+let lastDataMessage = ""
+
 const app = express();
 app.use(bodyParser.json());
 
@@ -20,12 +22,12 @@ app.get('/update/upcoming', (req, res) => {
     //const slides = require('./lastmessage.json');
     //const json = res.json(slides);
     //res.send(json[0].data)
-    res.send('hello')
+    res.send(lastDataMessage)
 })
 
 app.post('/update/upcoming', (req, res) => {
     console.log(req.body)
-    console.log(req.body.uplink_message.decoded_payload)
+    lastDataMessage = req.body.uplink_message.decoded_payload.data
     res.send('hello post')
 })
 
