@@ -1,12 +1,5 @@
-﻿
-const { Pool } = require('pg');
-
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
+﻿require('dotenv').config();
+const { Client } = require('pg');
 
 
 // Email content parser function
@@ -17,6 +10,20 @@ const nodemailer = require('nodemailer');
 const path       = require('path');
 
 let lastDataMessage = ""
+
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
+console.log('here?')
+client.connect()
+    .then(() => console.log('Connected to Render PostgreSQL!'))
+    .catch(err => console.error('Connection error', err.stack));
+
+console.log('now here')
 
 const app = express();
 app.use(bodyParser.json());
@@ -101,7 +108,7 @@ app.post('/api/subscribe', (req, res) => {
     });*/
 });
 
-(async () => {
+/*(async () => {
     await pool.query(`
         CREATE TABLE IF NOT EXISTS subscriptions (
             id SERIAL PRIMARY KEY,
@@ -111,7 +118,7 @@ app.post('/api/subscribe', (req, res) => {
     `);
     console.log('Table created');
     process.exit();
-})();
+})();*/
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
