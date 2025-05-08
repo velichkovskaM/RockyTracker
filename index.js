@@ -15,14 +15,15 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/update', (req, res) => {
+app.get('/update/upcoming', (req, res) => {
     //delete require.cache[require.resolve('./lastmessage.json')];
     //const slides = require('./lastmessage.json');
     //const json = res.json(slides);
     //res.send(json[0].data)
+    res.send('hello')
 })
 
-app.post('/update/upcoming', (req, res) => {
+app.post('/update', (req, res) => {
     console.log(res.json)
 })
 
