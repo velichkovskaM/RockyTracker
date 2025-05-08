@@ -15,6 +15,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/update/:id', (req, res) => {
+    const { id } = req.params;
+    res.send(`Great record ${id} have been updated.`)
+})
+
 // Setting up local host distribution
 const db = new sqlite3.Database('./subs.db');
 db.run(`CREATE TABLE IF NOT EXISTS subscriptions (

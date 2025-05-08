@@ -13,8 +13,47 @@ function makeIcon(cssClass) {
     });
 }
 
+function riskLevel(eventCount){
+    if (eventCount === 0) return 0;
+    if (eventCount <= 5) return 1;
+    if (eventCount <= 10) return 2;
+    if (eventCount <= 15) return 3;
+    if (eventCount <= 25) return 4;
+    return 5;
+}
+
+const level2Css = ['risk‑0','risk‑1','risk‑2','risk‑3','risk‑4','risk‑5'];
+function iconFromHistory(events){
+    const lvl = riskLevel(events.length);
+    return makeIcon(level2Css[lvl]);
+}
+
+function loadSites(map, wantedType){
+    fetch('data/landslide.json')
+        .then(r => r.json())
+        .then(sites => {
+            sites
+                .filter(s => !wantedType || s.type === wantedType)
+                .forEach(s => {
+                    const icon = iconFromHistory(s.events);
+                    const last = s.events.at(-1);
+                    L.marker([s.lat, s.lng], {icon})
+                        .bindPopup(`
+          <strong>${s.name || s.id}</strong><br/>
+          Type: ${s.type || 'street'}<br/>
+          Total events: ${s.events.length}<br/>
+          Last event: ${last ? new Date(last.ts).toLocaleString() : '—'}
+        `)
+        .addTo(map);
+        });
+    })
+    .catch(err => console.error('sites.json load error', err));
+}
+
+
 // Street map tab functions
 function initStreetMap() {
+    loadSites(streetMap, 'street');
     streetMap = L.map('map', {
         center: [46.1512, 14.9955],
         zoom: 8.3,
@@ -51,6 +90,7 @@ function initStreetMap() {
 
 // Railroad map functions
 function initRailMap() {
+    loadSites(railMap, 'railroad');
     railMap = L.map('mapRail', {
         center: [46.1512, 14.9955],
         zoom: 8.3,
