@@ -3,7 +3,7 @@
 const express    = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
-const sqlite3    = require('sqlite3').verbose();
+//const sqlite3    = require('sqlite3').verbose();
 const path       = require('path');
 
 const app = express();
@@ -21,13 +21,13 @@ app.get('/update/:id', (req, res) => {
 })
 
 // Setting up local host distribution
-const db = new sqlite3.Database('./subs.db');
+/*const db = new sqlite3.Database('./subs.db');
 db.run(`CREATE TABLE IF NOT EXISTS subscriptions (
                                                      id INTEGER PRIMARY KEY AUTOINCREMENT,
                                                      email TEXT UNIQUE NOT NULL,
                                                      subscribed DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
-
+*/
 
 // Temp email password for app type RockyTracker
 const transporter = nodemailer.createTransport({
@@ -61,7 +61,7 @@ app.post('/api/subscribe', (req, res) => {
         return res.status(400).send('Email + consent required');
     }
 
-    const stmt = db.prepare(
+    /*const stmt = db.prepare(
         `INSERT OR IGNORE INTO subscriptions(email) VALUES(?)`
     );
     stmt.run(email, async err => {
@@ -73,7 +73,7 @@ app.post('/api/subscribe', (req, res) => {
             console.error(e);
             res.send('Subscribed, but failed to send welcome email.');
         }
-    });
+    });*/
 });
 
 // Local host 3000
