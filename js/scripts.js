@@ -117,6 +117,23 @@ document.getElementById('bothTab').addEventListener('click', () => {
     setActiveTab('bothTab');
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const liveUpdateBanner = document.getElementById('liveUpdateBanner');
+    const emailCard = document.getElementById('emailCard');
+    const closeEmailCard = document.getElementById('closeEmailCard');
+
+    emailCard.style.display = 'none';
+
+    liveUpdateBanner.addEventListener('click', () => {
+        emailCard.style.display = 'flex';
+    });
+
+    closeEmailCard.addEventListener('click', () => {
+        emailCard.style.display = 'none';
+    });
+});
+
+
 // Initial load
 window.addEventListener('load', () => {
     initMap(['street']);
