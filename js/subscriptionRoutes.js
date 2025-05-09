@@ -31,7 +31,7 @@ async function sendWelcomeEmail(to) {
     });
 }
 
-app.post('/api/subscribe', async (req, res) => {
+router.post('/api/subscribe', async (req, res) => {
     const { email, consent } = req.body;
     if (!email || !consent) {
         return res.status(400).send('Email + consent required');
