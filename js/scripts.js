@@ -117,19 +117,23 @@ document.getElementById('bothTab').addEventListener('click', () => {
     setActiveTab('bothTab');
 });
 
+//email card toggle
 document.addEventListener('DOMContentLoaded', () => {
     const liveUpdateBanner = document.getElementById('liveUpdateBanner');
     const emailCard = document.getElementById('emailCard');
     const closeEmailCard = document.getElementById('closeEmailCard');
 
     emailCard.style.display = 'none';
+    overlay.style.display = 'none';
 
     liveUpdateBanner.addEventListener('click', () => {
         emailCard.style.display = 'flex';
+        overlay.style.display = 'block';
     });
 
     closeEmailCard.addEventListener('click', () => {
         emailCard.style.display = 'none';
+        overlay.style.display = 'none';
     });
 });
 
