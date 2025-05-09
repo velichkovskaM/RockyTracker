@@ -8,7 +8,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* Main card */
 .card {
     position: absolute;
     top: 0;
@@ -19,7 +18,6 @@ body {
     padding: 10px;
 }
 
-/* Tabs for switching between main cards */
 .tabs {
     display: flex;
     position: relative;
@@ -32,26 +30,25 @@ body {
     background: #d4d4d4;
     padding: 6px 18px;
     border: 2px solid #000;
-    border-bottom: none;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     font-weight: bold;
     cursor: pointer;
     user-select: none;
-    border-bottom: 2px solid #000;
+    border-bottom: none;
 }
 
 .tab.active {
     background: #f8f9fa !important;
     color: #000 !important;
     opacity: 1 !important;
-    border-bottom: none !important;
     z-index: 5;
 }
 
-.tab:hover   {background:#e2e2e2;}
+.tab:hover {
+    background: #e2e2e2;
+}
 
-/* Overall wrapper around cards */
 .cardWrapper {
     position: relative;
     width: 1300px;
@@ -68,15 +65,19 @@ body {
     border: 2px solid #000;
 }
 
-/* Sidebar-Map adaptation */
 .map-column {
     flex: 0 0 1000px;
 }
 
-#map {
+#map, #mapRail {
     width: 100%;
     height: 500px;
     display: block;
+}
+
+#mapRail {
+    display: none;
+    z-index: 1;
 }
 
 .sidebar {
@@ -94,12 +95,12 @@ body {
     box-sizing: border-box;
 }
 
-/* Legend for all the markers on the map */
+/* Marker legend */
 #markerLegend {
     position: absolute;
     top: 0;
     left: 1020px;
-    width:  300px;
+    width: 300px;
     height: 245px;
 }
 
@@ -108,13 +109,15 @@ body {
     margin-bottom: 5px;
     font-size: 90%;
 }
-#markerLegend span {
+
+#markerLegend span,
+#iconLegend {
     font-family: inherit;
+    font-size: 90%;
 }
 
 #markerLegend .legend-scale ul {
-    margin: 0;
-    margin-bottom: 5px;
+    margin: 0 0 5px 0;
     padding: 0;
     float: left;
     list-style: none;
@@ -122,56 +125,34 @@ body {
 
 #markerLegend .legend-scale ul li {
     font-size: 90%;
-    list-style: none;
     margin-left: 0;
     line-height: 18px;
     margin-bottom: 17px;
+    list-style: none;
 }
+
 #markerLegend ul.legend-labels li span {
     display: block;
     float: left;
     height: 30px;
     width: 40px;
     margin-right: 5px;
-    margin-left: 0;
     border: 1px solid #999;
 }
 
-/* Marker colors */
-.status-active  { color: #cf2a27; }
-.status-cleared { color: #f6b26b; }
-.status-closed  { color: #ffffff; }
-
-/* Legend for all the icons */
-#iconLegend {
-    position: absolute;
-    top: 254px;
-    left: 1020px;
-    width:  230px;
-    height: 130px;
-}
-
-#iconLegend {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 0.5em;
-}
-
+/* Icon legend */
 #iconLegend {
     position: absolute;
     top: 254px;
     left: 1020px;
     width: 300px;
     height: 100px;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     padding-right: 10px;
-    font-size: 90%;
-    font-family: inherit;
+    gap: 0.5em;
 }
 
 #iconLegend > span {
@@ -180,20 +161,7 @@ body {
     gap: 0.25em;
 }
 
-#iconLegend {
-    font-size: 90%;
-    font-family: inherit;
-}
-
 /* Email card */
-#emailCard {
-    position: absolute;
-    top: 393px;
-    left: 1020px;
-    width:  230px;
-    height: 130px;
-}
-
 #emailCard {
     position: absolute;
     top: 363px;
@@ -272,47 +240,36 @@ body {
 }
 
 #emailCard .btn-primary {
-    background-color:#ffffff;
+    background-color: #ffffff;
     color: black;
     font-weight: normal;
     border: 1px solid #000;
-    border-radius: 4px;
 }
 
 #emailCard .btn-primary:hover {
     background-color: #c6c7c8;
 }
 
-/* Street card */
-#streetCard {
-    z-index: 2;
-}
-
-#streetCard {
+/* Cards */
+#streetCard, #railCard {
     background-color: #f8f9fa;
-    border: 2px solid #000000;
+    border: 2px solid #000;
     padding: 10px;
     width: 1000px;
-    z-index: 2;
 }
 
-/* Rail card */
-#railCard {
-    z-index: 1;
-    padding: 10px;
-}
+#streetCard { z-index: 2; }
+#railCard { z-index: 1; }
 
-#mapRail {
-    width: 100%;
-    height: 500px;
-    display: none;
-    z-index: 1;
-}
+/* Marker colors */
+.status-active  { color: #cf2a27; }
+.status-cleared { color: #f6b26b; }
+.status-closed  { color: #ffffff; }
 
-/* Leaflet map */
-.leaflet-div-icon i{
-    font-size:24px;
-    line-height:24px;
+/* Leaflet icons */
+.leaflet-div-icon i {
+    font-size: 24px;
+    line-height: 24px;
 }
 
 .leaflet-div-icon {
@@ -320,22 +277,17 @@ body {
     border: none !important;
 }
 
-/* EFFECTS */
-/* Float */
+/* Float effect */
 .hvr-float {
     display: inline-block;
     vertical-align: middle;
-    -webkit-transform: perspective(1px) translateZ(0);
     transform: perspective(1px) translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: transform;
-    transition-property: transform;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
+    transition: transform 0.3s ease-out;
 }
-.hvr-float:hover, .hvr-float:focus, .hvr-float:active {
-    -webkit-transform: translateY(-8px);
+
+.hvr-float:hover,
+.hvr-float:focus,
+.hvr-float:active {
     transform: translateY(-8px) scale(1.4);
 }

@@ -1,6 +1,5 @@
-﻿let streetMap;
-let railMap;
-
+﻿
+let map;
 
 // Setup for location marker type
 function makeIcon(cssClass) {
@@ -44,151 +43,109 @@ function loadSites(map, wantedType){
           Total events: ${s.events.length}<br/>
           Last event: ${last ? new Date(last.ts).toLocaleString() : '—'}
         `)
-        .addTo(map);
+                        .addTo(map);
+                });
+        })
+        .catch(err => console.error('sites.json load error', err));
+}
+
+function initMap(types = ['street']) {
+    if (!map) {
+        map = L.map('map', {
+            center: [46.1512, 14.9955],
+            zoom: 8.3,
+            minZoom: 8.3,
+            maxZoom: 14,
+            maxBounds: [
+                [45.35, 13.35],
+                [46.88, 16.70]
+            ],
+            maxBoundsViscosity: 1.0
         });
-    })
-    .catch(err => console.error('sites.json load error', err));
-}
 
-
-// Street map tab functions
-function initStreetMap() {
-    loadSites(streetMap, 'street');
-    streetMap = L.map('map', {
-        center: [46.1512, 14.9955],
-        zoom: 8.3,
-        minZoom: 8.3,
-        maxZoom: 14,
-        maxBounds: [
-            [45.35, 13.35],
-            [46.88, 16.70]
-        ],
-        maxBoundsViscosity: 1.0
-    });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(streetMap);
-
-    fetch('data/lanslide.json')
-        .then(res => res.json())
-        .then(slides => {
-            slides
-                .filter(s => s.type === 'street')
-                .forEach(s => {
-                    const icon = makeIcon(`status-${s.status}`);
-                    L.marker([s.lat, s.lng], { icon })
-                        .bindPopup(`
-             <strong>${s.id}</strong><br/>
-             Type: ${s.type}<br/>
-             Size: ${s.size}<br/>
-             Reported: ${new Date(s.reported_at).toLocaleString()}
-           `)
-                        .addTo(streetMap);
-                });
-        })
-        .catch(err => console.error('Cannot load lanslide.json', err));
-}
-
-// Railroad map functions
-function initRailMap() {
-    loadSites(railMap, 'railroad');
-    railMap = L.map('mapRail', {
-        center: [46.1512, 14.9955],
-        zoom: 8.3,
-        minZoom: 8.3,
-        maxZoom: 14,
-        maxBounds: [[45.35, 13.35], [46.88, 16.70]],
-        maxBoundsViscosity: 1.0
-    });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(railMap);
-
-    fetch('data/lanslide.json')
-        .then(res => res.json())
-        .then(slides => {
-            slides
-                .filter(s => s.type === 'railroad')
-                .forEach(s => {
-                    const icon = makeIcon(`status-${s.status}`);
-                    L.marker([s.lat, s.lng], { icon })
-                        .bindPopup(`
-             <strong>${s.id}</strong><br/>
-             Type: ${s.type}<br/>
-             Status: ${s.status}<br/>
-             Reported: ${new Date(s.reported_at).toLocaleString()}
-           `)
-                        .addTo(railMap);
-                });
-        })
-        .catch(err => console.error('Cannot load lanslide.json', err));
-}
-
-// Changing between tabs functionality
-document.getElementById('railTab').addEventListener('click', () => {
-    const railDiv = document.getElementById('mapRail');
-    const streetDiv = document.getElementById('map');
-
-    if (railDiv.style.display === 'none') {
-        railDiv.style.display = 'block';
-        streetDiv.style.display = 'none';
-        document.getElementById('railCard').style.zIndex = 2;
-        document.getElementById('streetCard').style.zIndex = 1;
-        if (!railMap) {
-            initRailMap();
-        }
-        setTimeout(() => railMap.invalidateSize(), 0);
-        // Toggle active class
-        document.getElementById('railTab').classList.add('active');
-        document.getElementById('streetTab').classList.remove('active');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
     }
-});
+
+    // Clear previous markers
+    map.eachLayer(layer => {
+        if (layer instanceof L.Marker) map.removeLayer(layer);
+    });
+
+    // Add history markers
+    types.forEach(type => loadSites(map, type));
+
+    // Add slide markers
+    fetch('data/lanslide.json')
+        .then(res => res.json())
+        .then(slides => {
+            slides
+                .filter(s => types.includes(s.type))
+                .forEach(s => {
+                    const icon = makeIcon(`status-${s.status}`);
+                    L.marker([s.lat, s.lng], { icon })
+                        .bindPopup(`
+                            <strong>${s.id}</strong><br/>
+                            Type: ${s.type}<br/>
+                            Size: ${s.size}<br/>
+                            Reported: ${new Date(s.reported_at).toLocaleString()}
+                        `)
+                        .addTo(map);
+                });
+        })
+        .catch(err => console.error('Cannot load lanslide.json', err));
+}
+
+// Tab switching logic
+function setActiveTab(tabId) {
+    ['streetTab', 'railTab', 'bothTab'].forEach(id =>
+        document.getElementById(id).classList.toggle('active', id === tabId)
+    );
+}
 
 document.getElementById('streetTab').addEventListener('click', () => {
-    const railDiv = document.getElementById('mapRail');
-    const streetDiv = document.getElementById('map');
-
-    if (streetDiv.style.display === 'none') {
-        streetDiv.style.display = 'block';
-        railDiv.style.display = 'none';
-        document.getElementById('streetCard').style.zIndex = 2;
-        document.getElementById('railCard').style.zIndex = 1;
-        setTimeout(() => streetMap.invalidateSize(), 0);
-        document.getElementById('streetTab').classList.add('active');
-        document.getElementById('railTab').classList.remove('active');
-    }
+    initMap(['street']);
+    setActiveTab('streetTab');
 });
 
-// Loader function (change only if map layout is different from original)
+document.getElementById('railTab').addEventListener('click', () => {
+    initMap(['railroad']);
+    setActiveTab('railTab');
+});
+
+document.getElementById('bothTab').addEventListener('click', () => {
+    initMap(['street', 'railroad']);
+    setActiveTab('bothTab');
+});
+
+// Initial load
 window.addEventListener('load', () => {
-    document.getElementById('streetTab').classList.add('active');
-    document.getElementById('railTab').classList.remove('active');
+    initMap(['street']);
+    setActiveTab('streetTab');
 });
 
 // Email subscription form
 document.getElementById('subscribeForm').addEventListener('submit', async e => {
-        e.preventDefault();
-        const emailInput = document.querySelector('#exampleInputEmail1');
-        if (!emailInput) {
-            console.error('No email input found!');
-            return;
-        }
-        const email = emailInput.value;
-        const checkInput = document.querySelector('#exampleCheck1');
-        if (!checkInput) {
-            console.error('No check input found!');
-            return;
-        }
-        const consent = checkInput.checked;
-        if (!consent) return alert('You must agree to our privacy policy.');
+    e.preventDefault();
+    const emailInput = document.querySelector('#exampleInputEmail1');
+    if (!emailInput) {
+        console.error('No email input found!');
+        return;
+    }
+    const email = emailInput.value;
+    const checkInput = document.querySelector('#exampleCheck1');
+    if (!checkInput) {
+        console.error('No check input found!');
+        return;
+    }
+    const consent = checkInput.checked;
+    if (!consent) return alert('You must agree to our privacy policy.');
 
-        const res = await fetch('/api/subscribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, consent })
-        });
-
-        const text = await res.text();
-        alert(text);
+    const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, consent })
     });
 
-// Currently loading only initial landing page street map and updating railroad map at click
-window.addEventListener('load', initStreetMap);
+    const text = await res.text();
+    alert(text);
+});
