@@ -216,42 +216,57 @@ background: rgba(17, 16, 16, 0.95);}
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    height: 160px;
-    padding: 10px;
+    width: 350px;
+    height: 370px;
+    padding: 35px;
+    padding-bottom: 20px;
+    padding-top: 25px;
     background: rgba(17, 16, 16, 0.85);
     border-radius: 5px;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    font-size: 90%;
     display: flex;
     flex-direction: column;
     z-index: 3;
 }
-
-#emailCard form {
+#subscribeForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     width: 100%;
+    height: 100%;
 }
 
-.mb-3 {
-    margin-bottom: 0.75rem;
-}
 
 #emailCard .form-label {
     display: block;
-    margin-bottom: 0.25rem;
-    font-size: 100%;
+    margin-bottom: 40px;
+    font-size: 170%;
     color: #ffffff;
 }
+.mb-3 {
+    width: 80%;
+    font-size: 90%;
+}
 
+.GDPRcheck {
+    display: flex;
+    flex-direction: row;
+    margin-top: auto;
+    width: 100%;
+}
+
+/*email input*/
 #emailCard .form-control {
     display: block;
     width: 100%;
     padding: 0.4rem 0.6rem;
     font-size: 0.9rem;
+    text-align: center;
     line-height: 1.4;
-    color: #212529;
-    background: rgba(17, 16, 16, 0.85);
+    color: #ffffff;
+    background-color: rgba(1,1,1,0.5);
+    margin-top: 20px;
     background-clip: padding-box;
     border-radius: 5px;
     box-sizing: border-box;
@@ -263,16 +278,16 @@ background: rgba(17, 16, 16, 0.95);}
 }
 
 #emailCard .form-check-input {
-    margin-right: 0.5rem;
-    width: 1rem;
-    height: 1rem;
+    width: 45px;
+    height: 45px;
+    margin-right: 5px;
 }
 
 #emailCard .form-check-label {
-    margin: 0;
-    font-size: 0.85rem;
+    padding-top: 4px;
+    font-size: 11px;
     color: #ffffff;
-    background: rgba(17, 16, 16, 0.85);
+    text-align: left;
 }
 
 #emailCard .btn {
@@ -284,6 +299,8 @@ background: rgba(17, 16, 16, 0.95);}
     text-align: center;
     text-decoration: none;
     padding: 0.4rem 0.8rem;
+    color: #ffffff;
+    background-color: rgba(1,1,1,1);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -291,32 +308,35 @@ background: rgba(17, 16, 16, 0.95);}
 }
 
 #emailCard .btn-primary {
-    background-color: #ffffff;
-    color: black;
+    color: #ffffff;
+    background-color: rgba(1,1,1,1);
     font-weight: normal;
     border-radius: 5px;
+    width: 100%;
+    margin-top: 20px;
 }
 
 #emailCard .btn-primary:hover {
-    background-color: #c6c7c8;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 #emailCard .close-btn {
     position: absolute;
     top: 5px;
-    right: 5px;
+    right: 10px;
     background: none;
     border: none;
     border-radius: 5px;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: bold;
     cursor: pointer;
-    color: #333;
+    color: #ffffff;
 }
 
-    #emailCard .close-btn:hover {
-        color: #000;
-    }
+#emailCard .close-btn:hover {
+    color: #ff0000;
+}
 
 /* Cards */
 #streetCard, #railCard {

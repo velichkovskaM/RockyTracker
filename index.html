@@ -76,15 +76,18 @@
     <div class="card" id="emailCard">
         <button id="closeEmailCard" class="close-btn">&times;</button>
         <form id="subscribeForm">
+            <label for="exampleInputEmail1" class="form-label">Would you like to receive live updates?</label>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Would you like to receive new updates?</label>
+                <label>Submit you email to recieve the latest info there is!</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email@gmail.com" required>
+                <button type="submit" class="btn btn-primary">Add me to the mailing list</button>
             </div>
-            <div class="mb-3 form-check">
+            <div class="GDPRcheck">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">I agree to the storage and use of my data.</label>
+                <label class="form-check-label" for="exampleCheck1">
+                    I agree to receive email alerts about rockfalls and road safety updates. I also agree to the collection and processing of my email address for this purpose.
+                </label>
             </div>
-            <button type="submit" class="btn btn-primary">Add me to the mailing list</button>
         </form>
     </div>
     <div class="cardWrapper">
