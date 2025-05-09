@@ -63,26 +63,32 @@ app.post('/api/subscribe', async (req, res) => {
     }
 
     try {
-        await pool.query(
-            `INSERT INTO subscription_list(email)
-       VALUES ($1)
-       ON CONFLICT (email) DO NOTHING`,
+        const check = await pool.query(
+            'SELECT 1 FROM subscription_list WHERE email = $1',
             [email]
         );
 
-        try {
-            await sendWelcomeEmail(email);
-            res.send('Subscribed! Welcome email sent.');
-        } catch (e) {
-            console.error(e);
-            res.send('Subscribed, but failed to send welcome email.');
+        if (check.rowCount > 0) {
+            return res.status(200).send('You are already subscribed.');
         }
+
+        await pool.query(
+            'INSERT INTO subscription_list(email) VALUES ($1)',
+            [email]
+        );
+
+        res.send('Subscribed! Welcome email will be sent.');
+
+        sendWelcomeEmail(email).catch(err =>
+            console.error('Failed to send email:', err)
+        );
 
     } catch (err) {
         console.error('DB error:', err);
         res.status(500).send('DB error');
     }
 });
+
 
 // 🚀 Start server
 const PORT = process.env.PORT || 3000;
