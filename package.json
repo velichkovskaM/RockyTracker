@@ -1,9 +1,9 @@
 {
   "name": "rockytracker",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "js/index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node js/index.js",
     "migrate": "node-pg-migrate",
     "test": "echo \"Error: no test specified\" && exit 0"
   },

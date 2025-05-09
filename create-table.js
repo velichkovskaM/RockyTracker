@@ -19,10 +19,10 @@ client.connect()
     `);
     })
     .then(() => {
-        console.log('✅ Table created.');
+        console.log('Table created.');
         return client.end();
     })
     .catch(err => {
-        console.error('❌ Failed:', err);
+        console.error('Failed:', err);
         client.end();
     });
