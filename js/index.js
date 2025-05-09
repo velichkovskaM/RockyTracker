@@ -4,9 +4,12 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const { Pool } = require('pg');
 
+const subscriptionRoutes = require('./subscriptionRoutes');
+
 const app = express();
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
+app.use(subscriptionRoutes);
 
 let lastDataMessage = "";
 
