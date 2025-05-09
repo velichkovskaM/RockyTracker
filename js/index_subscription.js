@@ -1,11 +1,8 @@
-﻿require('dotenv').config();
-const express = require('express');
-const bodyParser = require('body-parser');
+﻿const express = require('express');
 const { Pool } = require('pg');
 const nodemailer = require('nodemailer');
 
-const app = express();
-app.use(bodyParser.json());
+const router = express.Router();
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -67,7 +64,4 @@ app.post('/api/subscribe', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
-    console.log(`Server listening on port ${PORT}`)
-);
+module.exports = router;
