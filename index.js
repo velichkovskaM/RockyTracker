@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const { Pool } = require('pg');
 
-const subscriptionRoutes = require('./subscriptionRoutes');
+const subscriptionRoutes = require('./js/subscriptionRoutes');
 
 const app = express();
 app.use(bodyParser.json());
