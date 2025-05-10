@@ -49,7 +49,20 @@ function parseMessageString(str) {
     return parsed;
 }
 
+const typeLabels = {
+    0: "street",
+    1: "railroad"
+};
+
+const sizeLabels = {
+    0: "small",
+    1: "big"
+};
+
 const rawMessage = "id:456,type:0,size:1";
 const data = parseMessageString(rawMessage);
 
-console.log(data);
+const readableType = typeLabels[data.type] ?? "unknown";
+const readableSize = sizeLabels[data.size] ?? "unknown";
+
+console.log(`The Arduino with ID of: ${data.id}, located on a: ${readableType} is of size: ${readableSize}.`);
