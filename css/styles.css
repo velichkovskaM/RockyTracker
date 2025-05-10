@@ -237,6 +237,27 @@ background: rgba(17, 16, 16, 0.95);}
     height: 100%;
 }
 
+/* Marker colors */
+.risk‑0 {
+    color: #ffffff !important;
+}
+
+.risk‑1 {
+    color: #f9cb9c !important;
+}
+
+.risk‑2 {
+    color: #e69138 !important;
+}
+
+.risk‑3 {
+    color: #e06666 !important;
+}
+
+.risk‑4 {
+    color: #cf2a27 !important;
+}
+
 
 #emailCard .form-label {
     display: block;
@@ -349,11 +370,6 @@ background: rgba(17, 16, 16, 0.95);}
 
 #streetCard { z-index: 2; }
 #railCard { z-index: 1; }
-
-/* Marker colors */
-.status-active  { color: #cf2a27; }
-.status-cleared { color: #f6b26b; }
-.status-closed  { color: #ffffff; }
 
 /* Leaflet icons */
 .leaflet-div-icon i {

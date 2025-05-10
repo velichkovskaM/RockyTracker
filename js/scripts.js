@@ -17,38 +17,45 @@ function riskLevel(eventCount){
     if (eventCount <= 5) return 1;
     if (eventCount <= 10) return 2;
     if (eventCount <= 15) return 3;
-    if (eventCount <= 25) return 4;
-    return 5;
+    return 4;
 }
 
-const level2Css = ['risk‑0','risk‑1','risk‑2','risk‑3','risk‑4','risk‑5'];
+const level2Css = ['risk‑0','risk‑1','risk‑2','risk‑3','risk‑4'];
 function iconFromHistory(events = []) {
     const lvl = riskLevel(events.length);
     return makeIcon(level2Css[lvl]);
 }
 
-function loadSites(map, wantedType){
-    fetch('data/landslide.json')
-        .then(r => r.json())
+function loadSites(map, wantedType) {
+    // Define type and size mappings
+    const typeLabels = {
+        0: 'street',
+        1: 'railroad'
+    };
+
+    // Fetch data from unified API
+    fetch('/api/get-data')
+        .then(res => res.json())
         .then(sites => {
             sites
-                .filter(s => !wantedType || s.type === wantedType)
-                .forEach(s => {
-                    const icon = iconFromHistory(s.events);
-                    const eventsArray = Array.isArray(s.events) ? s.events : [];
-                    const last = eventsArray.length > 0 ? eventsArray[eventsArray.length - 1] : null;
-                    L.marker([s.lat, s.lng], {icon})
+                .filter(entry => !wantedType || typeLabels[entry.type] === wantedType)
+                .forEach(entry => {
+                    const lvl = riskLevel(entry.accident_occurrences);
+                    const icon = makeIcon(level2Css[lvl]);
+
+                    L.marker([parseFloat(entry.lat), parseFloat(entry.lng)], { icon })
                         .bindPopup(`
-          <strong>${s.name || s.id}</strong><br/>
-          Type: ${s.type || 'street'}<br/>
-          Total events: ${eventsArray.length}<br/>
-          Last event: ${last ? new Date(last.ts).toLocaleString() : '—'}
-        `)
+                            <strong>${entry.device_name}</strong><br/>
+                            Type: ${typeLabels[entry.type] ?? 'unknown'}<br/>
+                            Total reports: ${entry.accident_occurrences}<br/>
+                            Last reported: ${entry.device_timestamp === "N/A" ? entry.device_timestamp : new Date(entry.device_timestamp).toLocaleString()}
+                        `)
                         .addTo(map);
                 });
         })
-        .catch(err => console.error('sites.json load error', err));
+        .catch(err => console.error('loadSites() error from /api/get-data:', err));
 }
+
 
 function initMap(types = ['street']) {
     if (!map) {
@@ -73,30 +80,44 @@ function initMap(types = ['street']) {
         map.removeLayer(layer);
     });
 
-
     // Add history markers
     types.forEach(type => loadSites(map, type));
 
-    // Add slide markers
-    fetch('data/landslide.json')
+    // Define label mapping
+    const typeLabels = {
+        0: 'street',
+        1: 'railroad'
+    };
+
+    const sizeLabels = {
+        0: 'small',
+        1: 'big',
+        2: 'massive'
+    };
+
+    // Fetch and add new markers
+    fetch('/api/get-data')
         .then(res => res.json())
-        .then(slides => {
-            slides
-                .filter(s => types.includes(s.type))
-                .forEach(s => {
-                    const icon = makeIcon(`status-${s.status}`);
-                    L.marker([s.lat, s.lng], { icon })
+        .then(data => {
+            data
+                .filter(entry => types.includes(typeLabels[entry.type])) // map numeric type to string
+                .forEach(entry => {
+                    const icon = makeIcon(level2Css[riskLevel(entry.accident_occurrences)]);
+
+                    L.marker([parseFloat(entry.lat), parseFloat(entry.lng)], { icon })
                         .bindPopup(`
-                            <strong>${s.id}</strong><br/>
-                            Type: ${s.type}<br/>
-                            Size: ${s.size}<br/>
-                            Reported: ${new Date(s.reported_at).toLocaleString()}
+                            <strong>${entry.device_name}</strong><br/>
+                            Type: ${typeLabels[entry.type] ?? 'unknown'}<br/>
+                            Size: ${sizeLabels[entry.size] ?? "N/A"}<br/>
+                            Reports: ${entry.accident_occurrences}<br/>
+                            Reported: ${entry.device_timestamp === "N/A" ? entry.device_timestamp : new Date(entry.device_timestamp).toLocaleString()}
                         `)
                         .addTo(map);
                 });
         })
-        .catch(err => console.error('Cannot load landslide.json', err));
+        .catch(err => console.error('Cannot load data from /api/get-data', err));
 }
+
 
 // Tab switching logic
 function setActiveTab(tabId) {
