@@ -69,8 +69,10 @@ function initMap(types = ['street']) {
 
     // Clear previous markers
     map.eachLayer(layer => {
-        if (layer instanceof L.Marker) map.removeLayer(layer);
+        if (layer instanceof L.TileLayer) return;
+        map.removeLayer(layer);
     });
+
 
     // Add history markers
     types.forEach(type => loadSites(map, type));
