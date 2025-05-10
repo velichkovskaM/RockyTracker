@@ -13,10 +13,10 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    background: rgba(17, 16, 16, 0.85);
+    background: rgba(17, 16, 16, 0.90);
     border-radius: 5px;
     width: 1000px;
-    padding: 10px;
+    padding: 20px;
 }
 
 .tabs {
@@ -31,7 +31,7 @@ body {
 }
 
 .tab {
-    background: rgba(17, 16, 16, 0.85);
+    background: rgba(17, 16, 16, 0.90);
     color: white;
     padding: 6px 18px;
     border-radius: 5px;
@@ -39,6 +39,7 @@ body {
     cursor: pointer;
     user-select: none;
     border-bottom: none;
+    box-shadow: 3px 3px 15px black;
 }
 
 .tab.active {
@@ -49,7 +50,7 @@ body {
 }
 
 .tab:hover {
-background: rgba(17, 16, 16, 0.95);}
+background: rgba(17, 16, 16, 0.90);}
 
 .cardWrapper {
     display: none;
@@ -64,7 +65,7 @@ background: rgba(17, 16, 16, 0.95);}
     top: 0;
     left: 0;
     width: 1000px;
-    background: rgba(17, 16, 16, 0.85);
+    background: rgba(17, 16, 16, 0.90);
     border-radius: 5px;
 }
 
@@ -96,7 +97,7 @@ background: rgba(17, 16, 16, 0.95);}
 }
 
 .sidebar .card {
-    background: rgba(17, 16, 16, 0.85);
+    background: rgba(17, 16, 16, 0.90);
     border-radius: 5px;
     padding: 10px;
     height: 250px;
@@ -110,8 +111,10 @@ background: rgba(17, 16, 16, 0.95);}
     left: 10px;
     right: auto;
     width: 293px;
-    height: 245px;
+    height: 265px;
     z-index: 2;
+    box-shadow: 3px 3px 15px black;
+    padding: 20px;
 }
 
 #markerLegend .legend-title {
@@ -156,7 +159,7 @@ background: rgba(17, 16, 16, 0.95);}
 /* Icon legend */
 #iconLegend {
     position: fixed;
-    top: 425px;
+    top: 445px;
     left: 10px;
     right: auto;
     width: 293px;
@@ -168,6 +171,7 @@ background: rgba(17, 16, 16, 0.95);}
     padding-right: 10px;
     gap: 0.8em;
     z-index: 2;
+    box-shadow: 3px 3px 15px black;
 }
 
 #iconLegend > span {
@@ -227,6 +231,7 @@ background: rgba(17, 16, 16, 0.95);}
     display: flex;
     flex-direction: column;
     z-index: 3;
+    box-shadow: 3px 3px 15px black;
 }
 #subscribeForm {
     display: flex;
@@ -362,7 +367,7 @@ background: rgba(17, 16, 16, 0.95);}
 /* Cards */
 #streetCard, #railCard {
     color: white;
-    background-color: rgba(17, 16, 16, 0.85);
+    background-color: rgba(17, 16, 16, 0.90);
     border-radius: 5px;
     padding: 10px;
     width: 1000px;
