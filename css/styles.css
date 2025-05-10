@@ -341,7 +341,7 @@ background: rgba(17, 16, 16, 0.95);}
 /* Cards */
 #streetCard, #railCard {
     color: white;
-    background-color: background: rgba(17, 16, 16, 0.85);
+    background-color: rgba(17, 16, 16, 0.85);
     border-radius: 5px;
     padding: 10px;
     width: 1000px;

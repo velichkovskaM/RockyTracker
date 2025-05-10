@@ -36,3 +36,20 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
     console.log(`Server listening on port ${PORT}`)
 );
+
+function parseMessageString(str) {
+    const parts = str.split(',');
+    const parsed = {};
+
+    for (const part of parts) {
+        const [key, value] = part.split(':').map(s => s.trim());
+        parsed[key] = isNaN(value) ? value : Number(value);
+    }
+
+    return parsed;
+}
+
+const rawMessage = "id:456,type:0,size:1";
+const data = parseMessageString(rawMessage);
+
+console.log(data);

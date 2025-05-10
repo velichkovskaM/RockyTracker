@@ -22,7 +22,7 @@ function riskLevel(eventCount){
 }
 
 const level2Css = ['risk‑0','risk‑1','risk‑2','risk‑3','risk‑4','risk‑5'];
-function iconFromHistory(events){
+function iconFromHistory(events = []) {
     const lvl = riskLevel(events.length);
     return makeIcon(level2Css[lvl]);
 }
@@ -35,12 +35,13 @@ function loadSites(map, wantedType){
                 .filter(s => !wantedType || s.type === wantedType)
                 .forEach(s => {
                     const icon = iconFromHistory(s.events);
-                    const last = s.events.at(-1);
+                    const eventsArray = Array.isArray(s.events) ? s.events : [];
+                    const last = eventsArray.length > 0 ? eventsArray[eventsArray.length - 1] : null;
                     L.marker([s.lat, s.lng], {icon})
                         .bindPopup(`
           <strong>${s.name || s.id}</strong><br/>
           Type: ${s.type || 'street'}<br/>
-          Total events: ${s.events.length}<br/>
+          Total events: ${eventsArray.length}<br/>
           Last event: ${last ? new Date(last.ts).toLocaleString() : '—'}
         `)
                         .addTo(map);
@@ -75,7 +76,7 @@ function initMap(types = ['street']) {
     types.forEach(type => loadSites(map, type));
 
     // Add slide markers
-    fetch('data/lanslide.json')
+    fetch('data/landslide.json')
         .then(res => res.json())
         .then(slides => {
             slides
@@ -92,7 +93,7 @@ function initMap(types = ['street']) {
                         .addTo(map);
                 });
         })
-        .catch(err => console.error('Cannot load lanslide.json', err));
+        .catch(err => console.error('Cannot load landslide.json', err));
 }
 
 // Tab switching logic
