@@ -20,16 +20,26 @@ const transporter = nodemailer.createTransport({
 
 async function sendWelcomeEmail(to) {
     await transporter.sendMail({
-        from: '"RockyTracker" <no‑reply@rockytracker.com>',
+        from: '"RockyTracker" <no-reply@rockytracker.com>',
         to,
-        subject: '🎉 Welcome to RockyTracker newsletter!',
+        subject: '🎉 Welcome to RockyTracker!',
         html: `
-      <h1>Hi there!</h1>
-      <p>Thanks for signing up for our updates.</p>
-      <p>— RockyTracker official</p>
+      <div style="font-family: sans-serif; line-height: 1.6; color: #2c3e50;">
+        <h1 style="font-size: 1.8em;">Welcome to RockyTracker!</h1>
+        <p>Thank you for signing up.</p>
+        <p>You’ll now receive instant alerts whenever a rockfall is detected on roads or railways across Slovenia.</p>
+        <p>These notifications are here to help you stay safe and make smarter travel decisions.</p>
+        <p>Whether you're commuting or planning a road trip, we’ve got you covered.</p>
+
+        <p style="margin-top: 20px;">Stay safe out there,</p>
+        <p><strong>🪨The RockyTracker Team</strong></p>
+        <hr style="margin-top: 30px;" />
+        <p style="font-size: 0.9em; color: #888;">If you didn’t sign up for these alerts, feel free to ignore this email or <a href="#">unsubscribe</a>.</p>
+      </div>
     `
     });
 }
+
 
 router.post('/api/subscribe', async (req, res) => {
     const { email, consent } = req.body;
