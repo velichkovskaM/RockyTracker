@@ -243,6 +243,15 @@ background: rgba(17, 16, 16, 0.90);}
     height: 100%;
 }
 
+#unsubscribeForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
 /* Marker colors */
 .risk‑0 {
     color: #ffffff !important;
