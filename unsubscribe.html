@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unsubscribe</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="overlay"></div>
+    <div class="card" id="emailCard">
+        <button id="closeEmailCard" class="close-btn" onclick="window.location.href='/'">&times;</button>
+        <form id="unsubscribeForm">
+            <label for="unsubscribeEmail" class="form-label">Unsubscribe from RockyTracker</label>
+            <div class="mb-3">
+                <label>Enter your email to unsubscribe:</label>
+                <input type="email" class="form-control" id="unsubscribeEmail" placeholder="email@gmail.com" required>
+                <button type="submit" class="btn btn-primary">Unsubscribe</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
