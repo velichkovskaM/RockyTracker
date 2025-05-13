@@ -6,11 +6,13 @@ const { types } = require('pg');
 const pool = require('./db');
 
 const subscriptionRoutes = require('./js/subscriptionRoutes');
+const unsubscriptionRoutes = require('./js/unsubscriptionRoutes');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
 app.use(subscriptionRoutes);
+app.use(unsubscriptionRoutes);
 
 types.setTypeParser(20, val => parseInt(val));
 types.setTypeParser(23, val => parseInt(val));
@@ -63,13 +65,10 @@ app.get('/api/get-data', async (req, res) => {
         })));
 
     } catch (err) {
-        console.error('❌ Failed to fetch data:', err.message);
+        console.error('Failed to fetch data:', err.message);
         res.status(500).send('Database error:\n' + err.message);
     }
 });
-
-
-
 
 
 app.get('/update/upcoming', (req, res) => {

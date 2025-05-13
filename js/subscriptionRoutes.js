@@ -222,36 +222,4 @@ router.post('/api/subscribe', async (req, res) => {
     }
 });
 
-const path = require('path');
-
-//unsubscribe page
-router.get('/unsubscribe', (req, res) => {
-    res.sendFile(path.join(__dirname, '../unsubscribe.html'));
-});
-
-//unsubscribe requests
-router.post('/api/unsubscribe', async (req, res) => {
-    const { email } = req.body;
-    if (!email) {
-        return res.status(400).send('Email is required to unsubscribe.');
-    }
-
-    try {
-        const result = await pool.query(
-            'DELETE FROM subscription_list WHERE email = $1',
-            [email]
-        );
-
-        if (result.rowCount === 0) {
-            return res.status(404).send('Email not found in subscription list.');
-        }
-
-        res.send('You have been unsubscribed successfully.');
-    } catch (err) {
-        console.error('DB error:', err);
-        res.status(500).send('Database error occurred.');
-    }
-});
-
-
 module.exports = router;
