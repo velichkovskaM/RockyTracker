@@ -19,6 +19,8 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendWelcomeEmail(to) {
+    const unsubscribeUrl = `https://rockytracker.onrender.com/unsubscribe?email=${encodeURIComponent(userEmail)}`;
+
     await transporter.sendMail({
         from: '"RockyTracker" <no-reply@rockytracker.com>',
         to,
@@ -168,7 +170,7 @@ async function sendWelcomeEmail(to) {
                            </table></td>
                          </tr>
                          <tr>
-                          <td align="center" class="es-text-5064" style="padding:0;Margin:0"><p class="es-text-mobile-size-12" style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:18px;letter-spacing:0;color:#666666;font-size:12px">If you didn’t sign up for these alerts, feel free to ignore this email or <a target="_blank" href="https://rockytracker.onrender.com/unsubscribe" style="mso-line-height-rule:exactly;text-decoration:underline;color:#666666;font-size:12px">unsubscribe</a>.</p></td>
+                          <td align="center" class="es-text-5064" style="padding:0;Margin:0"><p class="es-text-mobile-size-12" style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:18px;letter-spacing:0;color:#666666;font-size:12px">If you didn’t sign up for these alerts, feel free to ignore this email or <a target="_blank" href="${unsubscribeUrl}" style="mso-line-height-rule:exactly;text-decoration:underline;color:#666666;font-size:12px">unsubscribe</a>.</p></td>
                          </tr>
                        </table></td>
                      </tr>
