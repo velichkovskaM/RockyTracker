@@ -195,30 +195,3 @@ document.getElementById('subscribeForm').addEventListener('submit', async e => {
     alert(text);
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const unsubscribeBtn = document.getElementById('unsubscribeButton');
-    const emailInput = document.getElementById('unsubscribeEmail');
-
-    // Autofill from URL param
-    const params = new URLSearchParams(window.location.search);
-    const emailParam = params.get('email');
-    if (emailParam && emailInput) {
-        emailInput.value = emailParam;
-    }
-
-    if (unsubscribeBtn && emailInput) {
-        unsubscribeBtn.addEventListener('click', async () => {
-            const email = emailInput.value;
-
-            const res = await fetch('/api/unsubscribe', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            });
-
-            const text = await res.text();
-            alert(text);
-        });
-    }
-});
-

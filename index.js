@@ -135,9 +135,6 @@ app.post('/update/upcoming', async (req, res) => {
     }
 });
 
-
-
-
 function parseMessageString(str) {
     const parts = str.split(',');
     const parsed = {};

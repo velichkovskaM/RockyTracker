@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <title>Unsubscribe</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <script src="/js/scripts.js" defer></script>
+    <script src="/js/unsubscribe.js" defer></script>
+
 </head>
 <body>
     <div id="overlay"></div>
     <div class="card" id="emailCard">
         <button id="closeEmailCard" class="close-btn" onclick="window.location.href='/'">&times;</button>
-        <form id="unsubscribeForm">
+        <div id="unsubscribeForm">
             <label for="unsubscribeEmail" class="form-label">Unsubscribe from RockyTracker</label>
             <div class="mb-3">
                 <label>Enter your email to unsubscribe:</label>
                 <input type="email" class="form-control" id="unsubscribeEmail" placeholder="email@gmail.com" required>
-                <button type="button" class="btn btn-primary" id="unsubscribeButton">Unsubscribe</button>
+                <button type="button" class="btn btn-primary" id="unsubscribeBtn">Unsubscribe</button>
             </div>
-        </form>
+        </div>
     </div>
 </body>
 </html>
