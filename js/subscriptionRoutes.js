@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendWelcomeEmail(to) {
-    const unsubscribeUrl = `https://rockytracker.onrender.com/unsubscribe?email=${encodeURIComponent(userEmail)}`;
+    const unsubscribeUrl = `https://rockytracker.onrender.com/unsubscribe?email=${encodeURIComponent(to)}`;
 
     await transporter.sendMail({
         from: '"RockyTracker" <no-reply@rockytracker.com>',
