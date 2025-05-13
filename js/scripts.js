@@ -1,5 +1,6 @@
 ﻿
 let map;
+let userCircle = [];
 
 // Setup for location marker type
 function makeIcon(cssClass) {
@@ -56,6 +57,22 @@ function loadSites(map, wantedType) {
         .catch(err => console.error('loadSites() error from /api/get-data:', err));
 }
 
+setInterval(() => {
+    if (userCircle.length > 0) {
+        for (let i = 0; i < userCircle.length; i++) {
+            userCircle[i].setRadius(userCircle[i].getRadius() + 1250 / 60);
+
+            if (userCircle[i].getRadius() > 5000) {
+                userCircle[i].setRadius(userCircle[i].getRadius() - 5000);
+            }
+
+            const radius = userCircle[i].getRadius();
+            const fillOpacity = 0.3 * (1 - radius / 5000);
+
+            userCircle[i].setStyle({ fillOpacity });
+        }
+    }
+}, 1000 / 60);
 
 function initMap(types = ['street']) {
     if (!map) {
@@ -74,9 +91,38 @@ function initMap(types = ['street']) {
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
     }
 
+    navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords;
+
+        if (userCircle.length <= 4) {
+            for (var i = 0; i < 4; i++) {
+                const circle = L.circle([latitude, longitude], {
+                    radius: 1250 * i,
+                    color: 'dimblue',
+                    fillColor: '#00AABB',
+                    fillOpacity: 0.2,
+                    weight: 0
+                })
+
+                circle.addTo(map);
+                userCircle.push(circle)
+            }
+        } else {
+            userCircle.forEach((circle) => {
+                circle.setLatLng([latitude, longitude])
+
+                if (!map.hasLayer(circle)) {
+                    circle.addTo(map);
+                }
+            });
+        }
+    }, error => {
+        console.warn("Geolocation error:", error);
+    });
+
     // Clear previous markers
     map.eachLayer(layer => {
-        if (layer instanceof L.TileLayer) return;
+        if (layer instanceof L.TileLayer || layer === userCircle) return;
         map.removeLayer(layer);
     });
 
