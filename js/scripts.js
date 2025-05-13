@@ -204,19 +204,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const emailInput = document.getElementById('unsubscribeEmail');
             if (emailInput) emailInput.value = emailParam;
         }
-
-        unsubscribeForm.addEventListener('onclick', async function (e) {
-            e.preventDefault();
-            const email = document.getElementById('unsubscribeEmail').value;
-
-            const res = await fetch('/api/unsubscribe', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            });
-
-            const text = await res.text();
-            alert(text);
-        });
     }
 });
+
+async function unsubscribe(e) {
+    e.preventDefault();
+    const email = document.getElementById('unsubscribeEmail').value;
+
+    const res = await fetch('/api/unsubscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+    });
+
+    const text = await res.text();
+    alert(text);
+}
