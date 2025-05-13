@@ -195,23 +195,26 @@ document.getElementById('subscribeForm').addEventListener('submit', async e => {
     alert(text);
 });
 
-const params = new URLSearchParams(window.location.search);
-const emailParam = params.get('email');
-if (emailParam) {
-    document.getElementById('unsubscribeEmail').value = emailParam;
-}
+const unsubscribeForm = document.getElementById('unsubscribeForm');
+if (unsubscribeForm) {
+    const params = new URLSearchParams(window.location.search);
+    const emailParam = params.get('email');
+    if (emailParam) {
+        const emailInput = document.getElementById('unsubscribeEmail');
+        if (emailInput) emailInput.value = emailParam;
+    }
 
+    unsubscribeForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const email = document.getElementById('unsubscribeEmail').value;
 
-document.getElementById('unsubscribeForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const email = document.getElementById('unsubscribeEmail').value;
+        const res = await fetch('/api/unsubscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
 
-    const res = await fetch('/api/unsubscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        const text = await res.text();
+        alert(text);
     });
-
-    const text = await res.text();
-    alert(text);
-});
+}
