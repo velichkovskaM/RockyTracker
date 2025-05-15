@@ -35,7 +35,8 @@ body {
     color: white;
     padding: 6px 18px;
     border-radius: 5px;
-    font-weight: bold;
+    font-weight: normal;
+    font-size: 110%;
     cursor: pointer;
     user-select: none;
     border-bottom: none;
@@ -50,7 +51,7 @@ body {
 }
 
 .tab:hover {
-background: rgba(17, 16, 16, 0.90);}
+background: rgba(51, 48, 48, 0.90);}
 
 .cardWrapper {
     display: none;
@@ -107,11 +108,11 @@ background: rgba(17, 16, 16, 0.90);}
 /* Marker legend */
 #markerLegend {
     position: fixed;
-    top: 170px;
+    top: 173px;
     left: 10px;
     right: auto;
     width: 293px;
-    height: 265px;
+    height: 270px;
     z-index: 2;
     box-shadow: 3px 3px 15px black;
     padding: 20px;
@@ -119,7 +120,7 @@ background: rgba(17, 16, 16, 0.90);}
 
 #markerLegend .legend-title {
     text-align: left;
-    margin-bottom: 10px;
+    margin-bottom: 17px;
     font-size: 110%;
 }
 
@@ -159,7 +160,7 @@ background: rgba(17, 16, 16, 0.90);}
 /* Icon legend */
 #iconLegend {
     position: fixed;
-    top: 445px;
+    top: 453px;
     left: 10px;
     right: auto;
     width: 293px;
@@ -168,7 +169,7 @@ background: rgba(17, 16, 16, 0.90);}
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding-right: 10px;
+    padding: 20px;
     gap: 0.8em;
     z-index: 2;
     box-shadow: 3px 3px 15px black;
@@ -254,23 +255,38 @@ background: rgba(17, 16, 16, 0.90);}
 
 /* Marker colors */
 .risk‑0 {
-    color: #ffffff !important;
+    color: #fff600 !important;
+    border-radius: 50px !important;
+    box-shadow: 1px 1px 20px rgba(8, 6, 6, 0.2) !important;
+    background: rgba(8, 6, 6, 0.1) !important;
 }
 
 .risk‑1 {
-    color: #f9cb9c !important;
+    color: #ffc302 !important;
+    border-radius: 50px !important;
+    box-shadow: 1px 1px 20px rgba(8, 6, 6, 0.2) !important;
+    background: rgba(8, 6, 6, 0.1) !important;
 }
 
 .risk‑2 {
-    color: #e69138 !important;
+    color: #ff8f00 !important;
+    border-radius: 50px !important;
+    box-shadow: 1px 1px 20px rgba(8, 6, 6, 0.2) !important;
+    background: rgba(8, 6, 6, 0.1) !important;
 }
 
 .risk‑3 {
-    color: #e06666 !important;
+    color: #ff5b00 !important;
+    border-radius: 50px !important;
+    box-shadow: 1px 1px 20px rgba(8, 6, 6, 0.2) !important;
+    background: rgba(8, 6, 6, 0.1) !important;
 }
 
 .risk‑4 {
-    color: #cf2a27 !important;
+    color: #ff0505 !important;
+    border-radius: 50px !important;
+    box-shadow: 1px 1px 20px rgba(8, 6, 6, 0.2) !important;
+    background: rgba(8, 6, 6, 0.1) !important;
 }
 
 
