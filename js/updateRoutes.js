@@ -111,7 +111,7 @@ router.post('/update/upcoming', async (req, res) => {
     }
 });
 
-app.get('/update/upcoming', (req, res) => {
+router.get('/update/upcoming', (req, res) => {
     res.send(lastJson);
 });
 
