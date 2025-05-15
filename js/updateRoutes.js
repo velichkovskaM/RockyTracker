@@ -31,10 +31,9 @@ function parseMessageString(str) {
 }
 
 router.post('/update/upcoming', async (req, res) => {
-    console.log("Begun!")
     const jsonMessage = req.body;
-    const deviceName = req.body.end_device_ids?.deviceId;
-    const data = req.body.uplink_message?.decoded_payload?.data;
+    const deviceName = 'test' //req.body.end_device_ids?.deviceId;
+    const data = 'id=456,type=0,size=2,lat=46.05110,lng=14.50510,time=2025-05-09T14:35:00Z'//req.body.uplink_message?.decoded_payload?.data;
 
     if (!deviceName || !jsonMessage || !data) {
         return res.status(400).send('Missing required fields');
