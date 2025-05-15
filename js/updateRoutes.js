@@ -4,6 +4,8 @@ const nodemailer = require('nodemailer');
 
 const router = express.Router();
 
+let lastJson = ""
+
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
@@ -71,7 +73,7 @@ router.post('/update/upcoming', async (req, res) => {
             [deviceId, deviceName, JSON.stringify(jsonMessage), type, size, lat, lng, time]
         );
 
-        lastDataMessage = data;
+        lastJson = data;
 
         const result = await pool.query(`SELECT email FROM subscription_list`);
         const emails = result.rows.map(row => row.email);
@@ -107,6 +109,10 @@ router.post('/update/upcoming', async (req, res) => {
         console.error('DB insert error:', err);
         res.status(500).send('Database error:\n' + err.message);
     }
+});
+
+app.get('/update/upcoming', (req, res) => {
+    res.send(lastJson);
 });
 
 module.exports = router;

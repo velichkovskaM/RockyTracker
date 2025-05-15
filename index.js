@@ -72,10 +72,6 @@ app.get('/api/get-data', async (req, res) => {
     }
 });
 
-app.get('/update/upcoming', (req, res) => {
-    res.send(lastDataMessage);
-});
-
 const PORT = process.env.PORT || 2900;
 app.listen(PORT, () =>
     console.log(`Server listening on port ${PORT}`)
