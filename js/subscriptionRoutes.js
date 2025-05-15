@@ -133,6 +133,9 @@ async function sendWelcomeEmail(to) {
                       <td align="left" style="padding:0;Margin:0;width:540px">
                        <table width="100%" role="presentation" cellpadding="0" cellspacing="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                          <tr>
+                         <h1 class="es-text-mobile-size-22" style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:22px;font-style:normal;font-weight:normal;line-height:26.4px;color:#333333;text-align:center">🎉 Welcome to RockyTracker!</h1>
+                         </tr>
+                         <tr>
                           <td align="center" style="padding:20px;Margin:0;font-size:0">
                            <table width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" class="es-spacer" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                              <tr>
@@ -141,7 +144,6 @@ async function sendWelcomeEmail(to) {
                            </table></td>
                          </tr>
                          <tr>
-    <h1 class="es-text-mobile-size-22" style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:22px;font-style:normal;font-weight:normal;line-height:26.4px;color:#333333;text-align:center">🎉 Welcome to RockyTracker!</h1>
                           <td align="center" style="padding-top:10px;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:25px;letter-spacing:0;color:#333333;font-size:14px"><strong>Thank you for signing up!</strong></p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:25px;letter-spacing:0;color:#333333;font-size:14px"><strong><br></strong></p></td>
                          </tr>
                          <tr>
