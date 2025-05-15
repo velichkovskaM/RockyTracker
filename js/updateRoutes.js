@@ -1,6 +1,7 @@
 ﻿const express = require('express');
 const { Pool } = require('pg');
 const nodemailer = require('nodemailer');
+const {json} = require("express");
 
 const router = express.Router();
 
@@ -73,7 +74,7 @@ router.post('/update/upcoming', async (req, res) => {
             [deviceId, deviceName, JSON.stringify(jsonMessage), type, size, lat, lng, time]
         );
 
-        lastJson = data;
+        lastJson = jsonMessage;
 
         const result = await pool.query(`SELECT email FROM subscription_list`);
         const emails = result.rows.map(row => row.email);
