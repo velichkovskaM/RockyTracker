@@ -106,7 +106,6 @@ router.post('/update/upcoming', async (req, res) => {
         fs.writeFileSync(path.join(__dirname, 'lastReceivedMessage.json'), JSON.stringify(lastJson, null, 2));
 
         const result = await pool.query(`SELECT email FROM subscription_list`);
-        const unsubscribeUrl = `https://rockytracker.onrender.com/unsubscribe?email=${encodeURIComponent(email)}`;
         const emails = result.rows.map(row => row.email);
 
         const subject = `🪨RockyTracker Alert: Update from ${deviceName}`;
@@ -203,7 +202,7 @@ router.post('/update/upcoming', async (req, res) => {
                 <div class="divider"></div>
                 <div class="footer">
                   If you didn’t sign up for these alerts, feel free to ignore this email or
-                  <a class="unsubscribe" href="${unsubscribeUrl}" target="_blank">unsubscribe</a>.
+                  <a class="unsubscribe" target="_blank">unsubscribe</a>.
                 </div>
               </td>
             </tr>
@@ -214,8 +213,6 @@ router.post('/update/upcoming', async (req, res) => {
         `;
 
         for (const email of emails) {
-            const unsubscribeUrl = `https://rockytracker.onrender.com/unsubscribe?email=${encodeURIComponent(email)}`;
-
             try {
                 await transporter.sendMail({
                     to: email,
