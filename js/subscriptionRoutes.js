@@ -24,7 +24,7 @@ async function sendWelcomeEmail(to) {
     await transporter.sendMail({
         from: '"RockyTracker" <no-reply@rockytracker.com>',
         to,
-        subject: '🎉 Welcome to RockyTracker!',
+        subject: '🪨Welcome to RockyTracker!',
         html: `
      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html dir="ltr" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns="http://www.w3.org/1999/xhtml" lang="en">

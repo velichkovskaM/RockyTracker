@@ -44,14 +44,17 @@ body {
 }
 
 .tab.active {
-    background: #ffffff !important;
+    background: rgba(255, 255, 255, 0.8) !important;
     color: rgba(17, 16, 16, 1) !important;
     opacity: 1 !important;
     z-index: 5;
 }
 
 .tab:hover {
-background: rgba(51, 48, 48, 0.90);}
+    background: rgba(51, 48, 48, 0.90);
+    transform: translateY(-2px) scale(1.02);
+    transition: transform 0.2s ease-out;
+}
 
 .cardWrapper {
     display: none;
@@ -111,7 +114,7 @@ background: rgba(51, 48, 48, 0.90);}
     top: 173px;
     left: 10px;
     right: auto;
-    width: 293px;
+    width: 290px;
     height: 270px;
     z-index: 2;
     box-shadow: 3px 3px 15px black;
@@ -163,7 +166,7 @@ background: rgba(51, 48, 48, 0.90);}
     top: 453px;
     left: 10px;
     right: auto;
-    width: 293px;
+    width: 290px;
     height: 120px;
     display: flex;
     flex-direction: column;
@@ -256,37 +259,22 @@ background: rgba(51, 48, 48, 0.90);}
 /* Marker colors */
 .risk‑0 {
     color: #fff600 !important;
-    border-radius: 50px !important;
-    box-shadow: 1px 1px 20px rgba(8, 6, 6, 0.2) !important;
-    background: rgba(8, 6, 6, 0.1) !important;
 }
 
 .risk‑1 {
     color: #ffc302 !important;
-    border-radius: 50px !important;
-    box-shadow: 1px 1px 20px rgba(8, 6, 6, 0.2) !important;
-    background: rgba(8, 6, 6, 0.1) !important;
 }
 
 .risk‑2 {
     color: #ff8f00 !important;
-    border-radius: 50px !important;
-    box-shadow: 1px 1px 20px rgba(8, 6, 6, 0.2) !important;
-    background: rgba(8, 6, 6, 0.1) !important;
 }
 
 .risk‑3 {
     color: #ff5b00 !important;
-    border-radius: 50px !important;
-    box-shadow: 1px 1px 20px rgba(8, 6, 6, 0.2) !important;
-    background: rgba(8, 6, 6, 0.1) !important;
 }
 
 .risk‑4 {
     color: #ff0505 !important;
-    border-radius: 50px !important;
-    box-shadow: 1px 1px 20px rgba(8, 6, 6, 0.2) !important;
-    background: rgba(8, 6, 6, 0.1) !important;
 }
 
 
@@ -409,9 +397,11 @@ background: rgba(51, 48, 48, 0.90);}
 }
 
 .leaflet-div-icon {
-    background: transparent !important;
+    box-shadow: 1px 1px 20px rgba(8, 6, 6, 0.2) !important;
+    background: rgba(8, 6, 6, 0.1) !important;
     border: none !important;
-    border-radius: 5px;
+    border-radius: 50px;
+    overflow: visible !important;
 }
 
 /* Float effect */
@@ -419,8 +409,11 @@ background: rgba(51, 48, 48, 0.90);}
     display: inline-block;
     vertical-align: middle;
     transform: perspective(1px) translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
     transition: transform 0.3s ease-out;
+}
+
+.leaflet-div-icon.hvr-float {
+    will-change: transform;
 }
 
 .hvr-float:hover,
