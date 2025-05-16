@@ -106,6 +106,7 @@ router.post('/update/upcoming', async (req, res) => {
         fs.writeFileSync(path.join(__dirname, 'lastReceivedMessage.json'), JSON.stringify(lastJson, null, 2));
 
         const result = await pool.query(`SELECT email FROM subscription_list`);
+        const unsubscribeUrl = `https://rockytracker.onrender.com/unsubscribe?email=${encodeURIComponent(email)}`;
         const emails = result.rows.map(row => row.email);
 
         const subject = `🪨RockyTracker Alert: Update from ${deviceName}`;
