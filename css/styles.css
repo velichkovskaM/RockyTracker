@@ -56,22 +56,7 @@ body {
     transition: transform 0.2s ease-out;
 }
 
-.cardWrapper {
-    display: none;
-    position: relative;
-    width: 1300px;
-    height: 550px;
-    margin: 40px auto;
-}
 
-#cardsWrapper .card {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1000px;
-    background: rgba(17, 16, 16, 0.90);
-    border-radius: 5px;
-}
 
 .map-column {
     flex: 0 0 1000px;
@@ -111,7 +96,7 @@ body {
 /* Marker legend */
 #markerLegend {
     position: fixed;
-    top: 173px;
+    top: 174px;
     left: 10px;
     right: auto;
     width: 290px;
@@ -163,7 +148,7 @@ body {
 /* Icon legend */
 #iconLegend {
     position: fixed;
-    top: 453px;
+    top: 455px;
     left: 10px;
     right: auto;
     width: 290px;
@@ -402,6 +387,7 @@ body {
     border: none !important;
     border-radius: 50px;
     overflow: visible !important;
+    z-index: 3 !important;
 }
 
 /* Float effect */
