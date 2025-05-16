@@ -3,6 +3,12 @@ const { Pool } = require('pg');
 const nodemailer = require('nodemailer');
 const {json} = require("express");
 
+const fs = require('fs');
+const path = require('path');
+
+const filePath = path.join(__dirname, 'lastReceivedMessage.json');
+
+
 const router = express.Router();
 
 let lastJson = ""
@@ -35,46 +41,69 @@ function parseMessageString(str) {
 
 router.post('/update/upcoming', async (req, res) => {
     const jsonMessage = req.body;
-    const deviceName = 'test' //req.body.end_device_ids?.deviceId;
-    const data = 'id=456,type=0,size=2,lat=46.05110,lng=14.50510,time=2025-05-09T14:35:00Z'//req.body.uplink_message?.decoded_payload?.data;
+    const deviceName  = req.body.end_device_ids?.device_id;
+    const dataString  = req.body.uplink_message?.decoded_payload?.data;
+    const metadata    = req.body.uplink_message?.rx_metadata;
 
-    if (!deviceName || !jsonMessage || !data) {
+
+    if (!deviceName || !jsonMessage || !dataString || !metadata) {
         return res.status(400).send('Missing required fields');
     }
 
+
     let dataArray;
     try {
-        dataArray = parseMessageString(data);
+        dataArray = parseMessageString(dataString);
     } catch (err) {
         console.error('Parse error:', err);
         return res.status(400).send('Invalid data string format');
     }
 
-    const { type, size, lat, lng, time } = dataArray;
+    const { id, size } = dataArray;
+    const type = 0;
+    const firstHop = metadata[0];
+    const { latitude: lat, longitude: lng } = firstHop.location;
+
+    const rawTime = req.body.received_at || firstHop.time || new Date().toISOString();
+    const time = new Date(rawTime);
 
     if (
-        type == null || size == null ||
-        lat == null || lng == null || !time
+        id   == null ||
+        size == null ||
+        lat  == null ||
+        lng  == null ||
+        !time
     ) {
-        return res.status(400).send('Missing parsed message fields');
+        return res.status(400).send('Missing parsed or metadata fields');
     }
 
     try {
-        const deviceLookup = await pool.query(
-            `SELECT id FROM device_list WHERE device_name = $1`,
-            [deviceName]
+        const defaultType = 0;
+
+        await pool.query(
+            `INSERT INTO device_list (id, device_name, lat, lng, type, created_at, updated_at)
+             VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+             ON CONFLICT (id) DO NOTHING`,
+            [id, deviceName, lat, lng, defaultType]
         );
 
-        const deviceId = deviceLookup.rows[0]?.id ?? null;
 
         await pool.query(
             `INSERT INTO message_log (
-                device_id, device_name, message_json, type, size, lat, lng, device_timestamp
+                device_id,
+                device_name,
+                message_json,
+                size,
+                type,
+                lat,
+                lng,
+                device_timestamp
             ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-            [deviceId, deviceName, JSON.stringify(jsonMessage), type, size, lat, lng, time]
+            [id, deviceName, JSON.stringify(jsonMessage), size, defaultType, lat, lng, time]
         );
 
         lastJson = jsonMessage;
+        fs.writeFileSync(path.join(__dirname, 'lastReceivedMessage.json'), JSON.stringify(lastJson, null, 2));
 
         const result = await pool.query(`SELECT email FROM subscription_list`);
         const emails = result.rows.map(row => row.email);
@@ -252,7 +281,12 @@ router.post('/update/upcoming', async (req, res) => {
 });
 
 router.get('/update/upcoming', (req, res) => {
-    res.send(lastJson);
+    try {
+        const savedJson = fs.readFileSync(filePath, 'utf8');
+        res.type('application/json').send(savedJson);
+    } catch (err) {
+        res.status(404).send({ error: 'No last message stored yet.' });
+    }
 });
 
 module.exports = router;
