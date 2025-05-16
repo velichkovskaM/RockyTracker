@@ -18,7 +18,7 @@
     "f_cnt": 39,
     "frm_payload": "aWQ90,size=2",
     "decoded_payload": {
-      "data": "id=123,size=0"
+      "data": "id=123,size=1,battery=5"
     },
     "rx_metadata": [
       {
@@ -32,8 +32,8 @@
         "channel_rssi": -113,
         "snr": -14,
         "location": {
-          "latitude": 27.343455113661,
-          "longitude": 10.747657025586,
+          "latitude": 52.16518965,
+          "longitude": 78.548654896,
           "altitude": 400,
           "source": "SOURCE_REGISTRY"
         }

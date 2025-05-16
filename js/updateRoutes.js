@@ -59,7 +59,7 @@ router.post('/update/upcoming', async (req, res) => {
         return res.status(400).send('Invalid data string format');
     }
 
-    const { id, size } = dataArray;
+    const { id, size, battery } = dataArray;
     const type = 0;
     const firstHop = metadata[0];
     const { latitude: lat, longitude: lng } = firstHop.location;
@@ -80,12 +80,15 @@ router.post('/update/upcoming', async (req, res) => {
     try {
         const defaultType = 0;
 
-        await pool.query(
-            `INSERT INTO device_list (id, device_name, lat, lng, type, created_at, updated_at)
-             VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-             ON CONFLICT (id) DO NOTHING`,
-            [id, deviceName, lat, lng, defaultType]
-        );
+        await pool.query(`
+            INSERT INTO device_list (id, device_name, lat, lng, type, battery, created_at, updated_at)
+            VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            ON CONFLICT (id)
+                DO UPDATE SET
+                  battery = EXCLUDED.battery,
+                  updated_at = CURRENT_TIMESTAMP
+        `, [id, deviceName, lat, lng, defaultType, battery + "%"]);
+
 
 
         await pool.query(
@@ -97,9 +100,10 @@ router.post('/update/upcoming', async (req, res) => {
                 type,
                 lat,
                 lng,
-                device_timestamp
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-            [id, deviceName, JSON.stringify(jsonMessage), size, defaultType, lat, lng, time]
+                device_timestamp,
+                battery
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+            [id, deviceName, JSON.stringify(jsonMessage), size, defaultType, lat, lng, time, battery + "%"]
         );
 
         lastJson = jsonMessage;
