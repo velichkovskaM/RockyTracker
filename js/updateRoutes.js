@@ -109,6 +109,11 @@ router.post('/update/upcoming', async (req, res) => {
         lastJson = jsonMessage;
         fs.writeFileSync(path.join(__dirname, 'lastReceivedMessage.json'), JSON.stringify(lastJson, null, 2));
 
+        if (size === 0) {
+            console.log(`No alert email sent: size ${size} (too small).`);
+            return res.send('Message logged without alert (size 0)');
+        }
+
         const result = await pool.query(`SELECT email FROM subscription_list`);
         const emails = result.rows.map(row => row.email);
 
