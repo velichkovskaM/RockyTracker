@@ -80,7 +80,7 @@ function initMap(types = ['street']) {
             center: [46.1512, 14.9955],
             zoom: 8.3,
             minZoom: 8.3,
-            maxZoom: 14,
+            maxZoom: 18,
             maxBounds: [
                 [45.35, 13.35],
                 [46.88, 16.70]
