@@ -1,5 +1,4 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
-    console.log("Am here.")
     const unsubscribeBtn = document.getElementById('unsubscribeBtn');
     const emailInput = document.getElementById('unsubscribeEmail');
 

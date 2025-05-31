@@ -105,12 +105,8 @@ function insertMessageLog(data, jsonMessage) {
     ]);
 }
 
-async function sendEmails(data, device) {
-    const result = await pool.query(`SELECT email FROM subscription_list`);
-    const emails = result.rows.map(row => row.email); 
-
-    const subject = `🪨RockyTracker Alert: Update from ${data.device_name}`;
-    const html = `
+function getEmailHTML(device, data, email) {
+    return `
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -203,15 +199,21 @@ async function sendEmails(data, device) {
                 <div class="divider"></div>
                 <div class="footer">
                   If you didn’t sign up for these alerts, feel free to ignore this email or
-                  <a class="unsubscribe" target="_blank">unsubscribe</a>.
+                  <a class="unsubscribe" href="https://rockytracker.onrender.com/unsubscribe?email=${email}" target="_blank">unsubscribe</a>.
                 </div>
               </td>
             </tr>
           </table>
         </body>
         </html>
-
         `;
+}
+
+async function sendEmails(data, device) {
+    const result = await pool.query(`SELECT email FROM subscription_list`);
+    const emails = result.rows.map(row => row.email);
+
+    const subject = `🪨RockyTracker Alert: Update from ${data.device_name}`;
 
     for (const email of emails) {
         try {
@@ -219,7 +221,7 @@ async function sendEmails(data, device) {
                 to: email,
                 from: '"RockyTracker" <no-reply@rockytracker.com>',
                 subject: subject,
-                html: html
+                html: getEmailHTML(device, data, email)
             });
         } catch (err) {
             console.error(`Failed to send alert to ${email}:`, err.message);
