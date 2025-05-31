@@ -126,15 +126,18 @@ function initMap(types = ['street']) {
                         second: '2-digit',
                     });
 
-                    L.marker([parseFloat(entry.lat), parseFloat(entry.lng)], { icon })
-                        .bindPopup(`
+                    if (!isNaN(entry.lat) && !isNaN(entry.lng)) {
+
+                        L.marker([parseFloat(entry.lat), parseFloat(entry.lng)], {icon})
+                            .bindPopup(`
                             <strong>${entry.device_name}</strong><br/>
                             Type: ${typeLabels[entry.type] ?? 'unknown'}<br/>
                             Size: ${sizeLabels[entry.size] ?? "N/A"}<br/>
                             Reports: ${entry.accident_occurrences}<br/>
                             Reported: ${entry.eu_timestamp === "N/A" ? entry.eu_timestamp : formatter.format(new Date(entry.eu_timestamp))}
                         `)
-                        .addTo(map);
+                            .addTo(map);
+                    }
                 });
         })
         .catch(err => console.error('Cannot load data from /api/get-data', err));

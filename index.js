@@ -47,12 +47,14 @@ app.get('/api/get-data', async (req, res) => {
             SELECT
                 d.device_name,
                 d.type,
+                d.lat AS device_lat,
+                d.lng AS device_lng,
                 COALESCE(l.size, -1) AS size,
                 l.message_json AS message_json,
                 l.device_timestamp AS device_timestamp,
                 l.received_at AS received_at,
-                l.lat,
-                l.lng,
+                l.lat AS message_lat,
+                l.lng AS message_lng,
                 l.eu_device_timestamp,
                 COALESCE(l.accident_occurrences, 0) AS accident_occurrences
             FROM device_list d
@@ -65,8 +67,8 @@ app.get('/api/get-data', async (req, res) => {
             message_json: row.message_json || {},
             type: row.type,
             size: Number(row.size),
-            lat: row.lat,
-            lng: row.lng,
+            lat: row.message_lat ? row.message_lat : row.device_lat,
+            lng: row.message_lng ? row.message_lng : row.device_lng,
             device_timestamp: row.device_timestamp ? new Date(row.device_timestamp).toISOString() : 'N/A',
             eu_timestamp: row.eu_device_timestamp ? new Date(row.eu_device_timestamp).toISOString() : 'N/A',
             received_at: row.received_at ? new Date(row.received_at).toISOString() : 'N/A',
