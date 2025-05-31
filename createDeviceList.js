@@ -16,6 +16,7 @@ client.connect()
                                                         dev_eui VARCHAR(50) UNIQUE,
                                                         device_id VARCHAR(50) NOT NULL,
                                                         application_id VARCHAR(50) NOT NULL,
+                                                        type SMALLINT DEFAULT 0 NOT NULL,
                                                         battery SMALLINT NOT NULL,
                                                         created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP NOT NULL,
                                                         updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP NOT NULL

@@ -35,7 +35,6 @@ app.get('/api/get-data', async (req, res) => {
                     m.device_id,
                     m.message_json,
                     m.size,
-                    m.type,
                     m.lat,
                     m.lng,
                     m.device_timestamp,
@@ -47,11 +46,11 @@ app.get('/api/get-data', async (req, res) => {
             )
             SELECT
                 d.device_name,
+                d.type,
                 COALESCE(l.size, -1) AS size,
                 l.message_json AS message_json,
                 l.device_timestamp AS device_timestamp,
                 l.received_at AS received_at,
-                l.type,
                 l.lat,
                 l.lng,
                 l.eu_device_timestamp,

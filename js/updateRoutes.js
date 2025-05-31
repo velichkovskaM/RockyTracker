@@ -60,6 +60,12 @@ function getData(json) {
     return obj;
 }
 
+async function selectDevice(id) {
+    return await pool.query(`
+    SELECT id, type, dev_eui, battery FROM device_list where id = $1
+    `, [id])
+}
+
 function insertOrUpdateDeviceInDeviceList(data) {
     return pool.query(`
             INSERT INTO device_list (id, device_name, dev_eui, device_id, application_id, battery, created_at, updated_at)
@@ -79,20 +85,18 @@ function insertMessageLog(data, jsonMessage) {
             dev_eui,
             message_json,
             size,
-            type,
             lat,
             lng,
             altitude,
             device_timestamp,
             eu_device_timestamp
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
     `, [
         data.id,
         data.device_name,
         data.dev_eui,
         JSON.stringify(jsonMessage),
         data.size,
-        0,
         data.lat,
         data.lng,
         data.altitude,
@@ -101,7 +105,7 @@ function insertMessageLog(data, jsonMessage) {
     ]);
 }
 
-async function sendEmails(data) {
+async function sendEmails(data, device) {
     const result = await pool.query(`SELECT email FROM subscription_list`);
     const emails = result.rows.map(row => row.email);
 
@@ -188,7 +192,7 @@ async function sendEmails(data) {
                 <p>New active rockfall has been reported:</p>
                 <div class="space"><br><br></div>
                 <p><strong>Device:</strong> ${data.device_name}</p>
-                <p><strong>Type:</strong> ${0 === 0 ? 'Road' : 'Railroad'}</p>
+                <p><strong>Type:</strong> ${device.type === 0 ? 'Road' : 'Railroad'}</p>
                 <p><strong>Location:</strong> ${data.lat}, ${data.lng}</p>
                 <p><strong>Time:</strong> ${new Date(data.time).toLocaleString()}</p>
                 <div class="space"><br><br><br><br></div>
@@ -247,12 +251,15 @@ router.post('/update/upcoming', async (req, res) => {
         return res.status(400).send('Missing parsed or metadata fields');
     }
 
+    let device = undefined
+
     try {
-        const defaultType = 0;
 
         await insertOrUpdateDeviceInDeviceList(data);
 
-
+        console.log(data.id)
+        device = await selectDevice(data.id)
+        console.log(device.rows[0].type)
 
         await insertMessageLog(data, jsonMessage)
 
@@ -264,7 +271,7 @@ router.post('/update/upcoming', async (req, res) => {
             return res.send('Message logged without alert (size 0)');
         }
 
-        await sendEmails(data)
+        await sendEmails(data, device)
 
         res.send('Message logged and alerts sent');
     } catch (err) {

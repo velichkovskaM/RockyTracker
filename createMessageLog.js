@@ -17,7 +17,6 @@ client.connect()
                                                         dev_eui VARCHAR(50) NOT NULL,
                                                         message_json JSONB NOT NULL,
                                                         size SMALLINT NOT NULL,
-                                                        type SMALLINT NOT NULL,
                                                         lat DECIMAL(11, 9) NOT NULL,
                                                         lng DECIMAL(12, 9) NOT NULL,
                                                         altitude DECIMAL(10, 2) NOT NULL,
