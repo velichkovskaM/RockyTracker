@@ -12,8 +12,8 @@ client.connect()
         return client.query(`
             CREATE TABLE IF NOT EXISTS device_list (
                                                         id SERIAL PRIMARY KEY,
-                                                        device_name VARCHAR(155) UNIQUE,
-                                                        dev_eui VARCHAR(50) NOT NULL,
+                                                        device_name VARCHAR(155) not null,
+                                                        dev_eui VARCHAR(50) UNIQUE,
                                                         device_id VARCHAR(50) NOT NULL,
                                                         application_id VARCHAR(50) NOT NULL,
                                                         battery SMALLINT NOT NULL,

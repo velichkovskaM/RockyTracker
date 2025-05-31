@@ -116,7 +116,7 @@ function initMap(types = ['street']) {
                 .filter(entry => types.includes(typeLabels[entry.type]))
                 .forEach(entry => {
                     const icon = makeIcon(level2Css[riskLevel(entry.accident_occurrences)]);
-                    
+
                     const formatter = new Intl.DateTimeFormat('en-GB', {
                         timeZone: 'Europe/Ljubljana',
                         year: 'numeric',
