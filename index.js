@@ -40,7 +40,7 @@ app.get('/api/get-data', async (req, res) => {
                     m.device_timestamp,
                     m.received_at,
                     m.eu_device_timestamp,
-                    COUNT(*) FILTER (WHERE m.size <> 0) OVER (PARTITION BY m.device_id) AS filtered_accident_occurrences
+                    COUNT(*) OVER (PARTITION BY m.device_id) AS accident_occurrences
                 FROM message_log m
                 ORDER BY m.device_id, m.received_at DESC
             )
@@ -54,7 +54,7 @@ app.get('/api/get-data', async (req, res) => {
                 l.lat,
                 l.lng,
                 l.eu_device_timestamp,
-                COALESCE(l.filtered_accident_occurrences, 0) AS accident_occurrences
+                COALESCE(l.accident_occurrences, 0) AS accident_occurrences
             FROM device_list d
                      LEFT JOIN latest_logs l ON l.device_id = d.id;
 

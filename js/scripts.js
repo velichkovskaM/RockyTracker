@@ -103,9 +103,8 @@ function initMap(types = ['street']) {
     };
 
     const sizeLabels = {
-        0: 'None',
-        1: 'Small',
-        2: 'Big'
+        0: 'Small',
+        1: 'Big'
     };
 
 
