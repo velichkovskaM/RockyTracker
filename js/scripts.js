@@ -2,7 +2,7 @@
 let map;
 let userCircle = [];
 
-// Setup for location marker type
+
 function makeIcon(cssClass) {
     return L.divIcon({
         html: `<i class="bi bi-geo-alt-fill hvr-float ${cssClass}"></i>`,
@@ -25,36 +25,6 @@ const level2Css = ['risk‑0','risk‑1','risk‑2','risk‑3','risk‑4'];
 function iconFromHistory(events = []) {
     const lvl = riskLevel(events.length);
     return makeIcon(level2Css[lvl]);
-}
-
-function loadSites(map, wantedType) {
-    // Define type and size mappings
-    const typeLabels = {
-        0: 'street',
-        1: 'railroad'
-    };
-
-    // Fetch data from unified API
-    fetch('/api/get-data')
-        .then(res => res.json())
-        .then(sites => {
-            sites
-                .filter(entry => !wantedType || typeLabels[entry.type] === wantedType)
-                .forEach(entry => {
-                    const lvl = riskLevel(entry.accident_occurrences);
-                    const icon = makeIcon(level2Css[lvl]);
-
-                    L.marker([parseFloat(entry.lat), parseFloat(entry.lng)], { icon })
-                        .bindPopup(`
-                            <strong>${entry.device_name}</strong><br/>
-                            Type: ${typeLabels[entry.type] ?? 'unknown'}<br/>
-                            Total reports: ${entry.accident_occurrences}<br/>
-                            Last reported: ${entry.device_timestamp === "N/A" ? entry.device_timestamp : new Date(entry.device_timestamp).toLocaleString()}
-                        `)
-                        .addTo(map);
-                });
-        })
-        .catch(err => console.error('loadSites() error from /api/get-data:', err));
 }
 
 setInterval(() => {
@@ -120,35 +90,43 @@ function initMap(types = ['street']) {
         console.warn("Geolocation error:", error);
     });
 
-    // Clear previous markers
+
     map.eachLayer(layer => {
         if (layer instanceof L.TileLayer || layer === userCircle) return;
         map.removeLayer(layer);
     });
 
-    // Add history markers
-    types.forEach(type => loadSites(map, type));
 
-    // Define label mapping
     const typeLabels = {
         0: 'street',
         1: 'railroad'
     };
 
     const sizeLabels = {
-        0: 'small',
-        1: 'big',
-        2: 'massive'
+        0: 'None',
+        1: 'Small',
+        2: 'Big'
     };
 
-    // Fetch and add new markers
+
     fetch('/api/get-data')
         .then(res => res.json())
         .then(data => {
             data
-                .filter(entry => types.includes(typeLabels[entry.type])) // map numeric type to string
+                .filter(entry => types.includes(typeLabels[entry.type]))
                 .forEach(entry => {
                     const icon = makeIcon(level2Css[riskLevel(entry.accident_occurrences)]);
+
+                    console.log(entry)
+                    const formatter = new Intl.DateTimeFormat('en-GB', {
+                        timeZone: 'Europe/Ljubljana',
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                    });
 
                     L.marker([parseFloat(entry.lat), parseFloat(entry.lng)], { icon })
                         .bindPopup(`
@@ -156,7 +134,7 @@ function initMap(types = ['street']) {
                             Type: ${typeLabels[entry.type] ?? 'unknown'}<br/>
                             Size: ${sizeLabels[entry.size] ?? "N/A"}<br/>
                             Reports: ${entry.accident_occurrences}<br/>
-                            Reported: ${entry.device_timestamp === "N/A" ? entry.device_timestamp : new Date(entry.device_timestamp).toLocaleString()}
+                            Reported: ${entry.eu_timestamp === "N/A" ? entry.eu_timestamp : formatter.format(new Date(entry.eu_timestamp))}
                         `)
                         .addTo(map);
                 });
@@ -165,7 +143,7 @@ function initMap(types = ['street']) {
 }
 
 
-// Tab switching logic
+
 function setActiveTab(tabId) {
     ['streetTab', 'railTab', 'bothTab'].forEach(id =>
         document.getElementById(id).classList.toggle('active', id === tabId)
@@ -187,7 +165,7 @@ document.getElementById('bothTab').addEventListener('click', () => {
     setActiveTab('bothTab');
 });
 
-//email card toggle
+
 document.addEventListener('DOMContentLoaded', () => {
     const liveUpdateBanner = document.getElementById('liveUpdateBanner');
     const emailCard = document.getElementById('emailCard');
@@ -208,13 +186,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Initial load
+
 window.addEventListener('load', () => {
     initMap(['street']);
     setActiveTab('streetTab');
 });
 
-// Email subscription form
+
 document.getElementById('subscribeForm').addEventListener('submit', async e => {
     e.preventDefault();
     const emailInput = document.querySelector('#exampleInputEmail1');
@@ -241,3 +219,24 @@ document.getElementById('subscribeForm').addEventListener('submit', async e => {
     alert(text);
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+
+
+    const personEntries = document.querySelectorAll(".persons-container .person-entry");
+
+    personEntries.forEach(entry => {
+        entry.addEventListener("mouseenter", () => {
+            personEntries.forEach(otherEntry => {
+                if (otherEntry !== entry) {
+                    otherEntry.classList.remove("is-active");
+                }
+            });
+
+            entry.classList.add("is-active");
+        });
+
+        entry.addEventListener("mouseleave", () => {
+            entry.classList.remove("is-active");
+        });
+    });
+});

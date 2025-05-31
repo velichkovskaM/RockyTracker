@@ -13,9 +13,10 @@ client.connect()
             CREATE TABLE IF NOT EXISTS device_list (
                                                         id SERIAL PRIMARY KEY,
                                                         device_name VARCHAR(155) UNIQUE,
-                                                        lat DECIMAL(11, 9) NOT NULL,
-                                                        lng DECIMAL(12, 9) NOT NULL,
-                                                        type SMALLINT NOT NULL,
+                                                        dev_eui VARCHAR(50) NOT NULL,
+                                                        device_id VARCHAR(50) NOT NULL,
+                                                        application_id VARCHAR(50) NOT NULL,
+                                                        battery SMALLINT NOT NULL,
                                                         created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP NOT NULL,
                                                         updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP NOT NULL
             );

@@ -13,39 +13,162 @@
             crossorigin="" defer></script>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 </head>
 <body>
-    <div id="titleBanner" class="banner">
-        🪨 RockyTracker
-    </div>
-    <div id="map"></div>
-    <div class="radar-container">
-        <div class="radar-circle"></div>
-    </div>
-    <div class="map-column">
-        <div class="tabs">
-            <span class="tab" id="streetTab">Roads</span>
-            <span class="tab" id="railTab">Railroads</span>
-            <span class="tab" id="bothTab">Both</span>
-        </div>
-    </div>
 
-    <div class="sidebar">
-        <div class="card" id="markerLegend">
-            <div class='legend-title'>Rockfall hazard</div>
-            <div class='legend-scale'>
-                <ul class='legend-labels'>
-                    <li><span style='background: #fff600;'></span>   0</li>
-                    <li><span style='background: #ffc302;'></span> 1 - 5</li>
-                    <li><span style='background: #ff8f00;'></span> 6 - 10</li>
-                    <li><span style='background: #ff5b00;'></span>10 - 15</li>
-                    <li><span style='background: #ff0505;'></span>15 - ∞</li>
-                </ul>
+<div class="menu-trigger">
+    <div class="bars">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <p class="menu-label">INFO</p>
+    <div class="text-content-panel">
+        <h2>About RockyTracker</h2>
+        <p>RockyTracker is a real-time hazard detection system that is designed to monitor rockfalls across roads and railroads in Slovenia. By combining simple hardware with a cloud infrastructure, we created a system that can be used as a base for further developing a detailed interactive tool for helping people in their everyday lives.</p>
+        <p>Users can visit the website RockyTracker, where they are presented with an interactive map featuring markers and the option to subscribe for real-time alerts. An additional feature provided by the website is access to the full history of all devices currently active and located in Slovenia. This makes RockyTracker not only useful to everyday commuters, but also to researchers, engineers or even infrastructure planners, who can use it as a practical tool in their work.</p>
+        <h2>Why use RockyTracker</h2>
+        <p>RockyTracker is built on a simple concept, using audio-based detection to identify rockfalls of varying sizes and notify users in real time. Our goal was to create an accessible and low-cost platform that provides safety information for both the public and professionals.</p>
+        <p>Powered by the LoRaWAN XIAO nRF52 Sense, each device listens for characteristic rockfall sounds and with the help of our model that was trained using Edge Impulse and tested on an Arduino Nano BLE 33 as well as the XIAO nRF52 Sense, sends hazard events wirelessly to the TTN servers, where we take the information to our cloud system. The platform enables users to:</p>
+        <ul>
+            <li><p><b>Detect rockfalls</b> using a XIAO nRF52 Sense microphone feature</p></li>
+            <li><p><b>Receive notifications</b> for any upcoming device activity and show users their nearby devices from where they are viewing the website using geolocation API's</p></li>
+            <li><p><b>Visualize hazard activitys</b> live on an interactive map with the option to see threat levels, devices that are located on roads, railroads or both as well as number of activities detected on each device.</p></li>
+        </ul>
+
+        <h2>Video explenation</h2>
+        <video src="/video/test_video.mp4" width="400" height="225" controls>
+            Your browser does not support the video tag.
+        </video>
+
+                        <h2 class="team-section-title">Our Team</h2>
+        <div class="persons-container">
+                        <div class="person-entry">
+                <div class="person-preview">
+                    <img src="https://media.licdn.com/dms/image/v2/C4E03AQF7pvIhp0rIkA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1646490034953?e=1753920000&v=beta&t=DaDSmB8R6aismn1zXjkpMmQERFKuAyeOS0duhyenijo" alt="Team Member 1">
+                    <div>
+                        <span class="name">Matea Velichkovska</span>
+                        <span class="title-preview">Full stack developer</span>
+                    </div>
+                </div>
+                <div class="person-details-card">
+                    <div class="card-header">
+                        <img src="https://media.licdn.com/dms/image/v2/C4E16AQHJnymjqzkzAg/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1646490261106?e=1753920000&v=beta&t=-tFR_CMXzz0sEyKhMKSgZ5LbuC-72ly9k6XVfduo4Nk" alt="Cover Photo" class="cover-photo">
+                        <img src="https://media.licdn.com/dms/image/v2/C4E03AQF7pvIhp0rIkA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1646490034953?e=1753920000&v=beta&t=DaDSmB8R6aismn1zXjkpMmQERFKuAyeOS0duhyenijo" alt="Jane Doe" class="profile-avatar">
+                    </div>
+                    <div class="profile-body">
+                        <h3 class="profile-name">Matea Velichkovska</h3>
+                        <p class="profile-title">Full stack developer</p>
+                        <div class="profile-socials">
+                            <a href="https://www.linkedin.com/in/matea-velichkovska-9a8469222/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                        <div class="person-entry">
+                <div class="person-preview">
+                    <img src="https://media.licdn.com/dms/image/v2/C4E03AQFmclUQzs6Xew/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1633976083762?e=1753920000&v=beta&t=CGg6vwXmvWpukEc0y7HPWJflLcb-cFCDzfLUhkGQIoU" alt="Team Member 2">
+                    <div>
+                        <span class="name">Taja Jeraj</span>
+                        <span class="title-preview">UX/UI Designer</span>
+                    </div>
+                </div>
+                <div class="person-details-card">
+                    <div class="card-header">
+                        <img src="https://media.licdn.com/dms/image/v2/C5616AQHTzs7DvJ0PVA/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1648919646445?e=1753920000&v=beta&t=ZM3dIxqclcUKi7OmmNBgLXxnJHD0Enc6mRTtSQm5l00" alt="Cover Photo" class="cover-photo">
+                        <img src="https://media.licdn.com/dms/image/v2/C4E03AQFmclUQzs6Xew/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1633976083762?e=1753920000&v=beta&t=CGg6vwXmvWpukEc0y7HPWJflLcb-cFCDzfLUhkGQIoU" alt="John Smith" class="profile-avatar">
+                    </div>
+                    <div class="profile-body">
+                        <h3 class="profile-name">Taja Jeraj</h3>
+                        <p class="profile-title">UX/UI Designer</p>
+                        <div class="profile-socials">
+                            <a href="https://www.linkedin.com/in/taja-jeraj/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                        <div class="person-entry">
+                <div class="person-preview">
+                    <img src="https://media.licdn.com/dms/image/v2/D5635AQHXnixAoBXPbQ/profile-framedphoto-shrink_400_400/B56ZYzwAcGH0Ao-/0/1744624945204?e=1749243600&v=beta&t=qbgQCVNNGeSGqVA114LHzjV7HNHU0MIMWz8fTiS425M" alt="Team Member 3">
+                    <div>
+                        <span class="name">Mateja Ferk</span>
+                        <span class="title-preview">Data Scientist</span>
+                    </div>
+                </div>
+                <div class="person-details-card">
+                    <div class="card-header">
+                        <img src="https://static.licdn.com/aero-v1/sc/h/55k1z8997gh8dwtihm11aajyq" alt="Cover Photo" class="cover-photo">
+                        <img src="https://media.licdn.com/dms/image/v2/D5635AQHXnixAoBXPbQ/profile-framedphoto-shrink_400_400/B56ZYzwAcGH0Ao-/0/1744624945204?e=1749243600&v=beta&t=qbgQCVNNGeSGqVA114LHzjV7HNHU0MIMWz8fTiS425M" alt="Alice Brown" class="profile-avatar">
+                    </div>
+                    <div class="profile-body">
+                        <h3 class="profile-name">Mateja Ferk</h3>
+                        <p class="profile-title">Data Scientist | ML Engineer</p>
+                        <div class="profile-socials">
+                            <a href="https://www.linkedin.com/in/mateja-ferk13/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                        <div class="person-entry">
+                <div class="person-preview">
+                    <img src="https://media.licdn.com/dms/image/v2/D5603AQFI4LVph83hvg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1666049092515?e=1753920000&v=beta&t=noex9CkxP9h3wreWQAcnhIEmizXhWbRQlrXeD6w2j9Q" alt="Team Member 4">
+                    <div>
+                        <span class="name">Milan Mandić</span>
+                        <span class="title-preview">Embedded programmer</span>
+                    </div>
+                </div>
+                <div class="person-details-card">
+                    <div class="card-header">
+                        <img src="https://media.licdn.com/dms/image/v2/D5616AQHwQ5EthwUHmA/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1666050413185?e=1753920000&v=beta&t=_mQ0-9Wh8wdWXe2F9O_27orlLI3WAaJO_4kPBjLoBIg" alt="Cover Photo" class="cover-photo">
+                        <img src="https://media.licdn.com/dms/image/v2/D5603AQFI4LVph83hvg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1666049092515?e=1753920000&v=beta&t=noex9CkxP9h3wreWQAcnhIEmizXhWbRQlrXeD6w2j9Q" alt="Bob Green" class="profile-avatar">
+                    </div>
+                    <div class="profile-body">
+                        <h3 class="profile-name">Milan Mandić</h3>
+                        <p class="profile-title">Embedded programmer</p>
+                        <div class="profile-socials">
+                            <a href="https://www.linkedin.com/in/milanmandi%C4%87/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
+    </div> </div> 
+<div id="titleBanner" class="banner">
+    🪨 RockyTracker
+</div>
+<div id="map"></div>
+<div class="radar-container">
+    <div class="radar-circle"></div>
+</div>
+<div class="map-column">
+    <div class="tabs">
+        <span class="tab" id="streetTab">Roads</span>
+        <span class="tab" id="railTab">Railroads</span>
+        <span class="tab" id="bothTab">Both</span>
     </div>
-    <div class="card" id="iconLegend">
+</div>
+
+<div class="sidebar">
+    <div class="card" id="markerLegend">
+        <div class='legend-title'>Rockfall hazard</div>
+        <div class='legend-scale'>
+            <ul class='legend-labels'>
+                <li><span style='background: #fff600;'></span>   0</li>
+                <li><span style='background: #ffc302;'></span> 1 - 5</li>
+                <li><span style='background: #ff8f00;'></span> 6 - 10</li>
+                <li><span style='background: #ff5b00;'></span>10 - 15</li>
+                <li><span style='background: #ff0505;'></span>15 - ∞</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="card" id="iconLegend">
         <span class="legend-item">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#cc0000" class="bi bi-exclamation-diamond" viewBox="0 0 16 16">
                 <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.48 1.48 0 0 1 0-2.098zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z" />
@@ -53,39 +176,39 @@
             </svg>
             <span class="legend-label"> Small stones on the road</span>
         </span>
-        <span class="legend-item">
+    <span class="legend-item">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#cc0000" class="bi bi-exclamation-diamond-fill" viewBox="0 0 16 16">
-                <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58.58.58-1.519 0-2.098zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
             </svg>
             <span class="legend-label"> Large stones on the road</span>
         </span>
-        <span class="legend-item">
+    <span class="legend-item">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-octagon-fill" viewBox="0 0 16 16">
                 <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
             </svg>
             <span class="legend-label"> Closed roads</span>
         </span>
-    </div>
-    <div id="overlay"></div>
-    <div class="card" id="emailCard">
-        <button id="closeEmailCard" class="close-btn">&times;</button>
-        <form id="subscribeForm">
-            <label for="exampleInputEmail1" class="form-label">Would you like to receive live updates?</label>
-            <div class="mb-3">
-                <label>Submit you email to recieve the latest info there is!</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email@gmail.com" required>
-                <button type="submit" class="btn btn-primary">Add me to the mailing list</button>
-            </div>
-            <div class="GDPRcheck">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">
-                    I agree to receive email alerts about rockfalls and road safety updates. I also agree to the collection and processing of my email address for this purpose.
-                </label>
-            </div>
-        </form>
-    </div>
-    <div id="liveUpdateBanner" class="banner">
-        📯Would you like to receive live updates? Click here!
-    </div>
+</div>
+<div id="overlay"></div>
+<div class="card" id="emailCard">
+    <button id="closeEmailCard" class="close-btn">&times;</button>
+    <form id="subscribeForm">
+        <label for="exampleInputEmail1" class="form-label">Would you like to receive live updates?</label>
+        <div class="mb-3">
+            <label>Submit you email to recieve the latest info there is!</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email@gmail.com" required>
+            <button type="submit" class="btn btn-primary">Add me to the mailing list</button>
+        </div>
+        <div class="GDPRcheck">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">
+                I agree to receive email alerts about rockfalls and road safety updates. I also agree to the collection and processing of my email address for this purpose.
+            </label>
+        </div>
+    </form>
+</div>
+<div id="liveUpdateBanner" class="banner">
+    📯Would you like to receive live updates? Click here!
+</div>
 </body>
 </html>

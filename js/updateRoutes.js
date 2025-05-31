@@ -2,6 +2,7 @@
 const { Pool } = require('pg');
 const nodemailer = require('nodemailer');
 const {json} = require("express");
+const { DateTime } = require('luxon');
 
 const fs = require('fs');
 const path = require('path');
@@ -39,86 +40,73 @@ function parseMessageString(str) {
     return parsed;
 }
 
-router.post('/update/upcoming', async (req, res) => {
-    const jsonMessage = req.body;
-    const deviceName  = req.body.end_device_ids?.device_id;
-    const dataString  = req.body.uplink_message?.decoded_payload?.data;
-    const metadata    = req.body.uplink_message?.rx_metadata;
+function getData(json) {
+    const data = parseMessageString(json.uplink_message?.decoded_payload?.data);
 
+    var obj = {};
+    obj.dev_eui = json.end_device_ids?.dev_eui;
+    obj.device_id = json.end_device_ids?.device_id;
+    obj.application_id = json.end_device_ids?.application_ids?.application_id;
+    obj.device_name = json.end_device_ids?.device_id;
+    obj.size = data['size']
+    obj.battery = data['battery'];
+    obj.id = data['id'];
+    obj.timestamp = json.uplink_message?.rx_metadata[0].time;
+    obj.time = new Date(obj.timestamp)
+    obj.lat = json.uplink_message?.rx_metadata[0]?.location?.latitude;
+    obj.lng = json.uplink_message?.rx_metadata[0]?.location?.longitude;
+    obj.altitude = json.uplink_message?.rx_metadata[0]?.location?.altitude;
 
-    if (!deviceName || !jsonMessage || !dataString || !metadata) {
-        return res.status(400).send('Missing required fields');
-    }
+    return obj;
+}
 
-
-    let dataArray;
-    try {
-        dataArray = parseMessageString(dataString);
-    } catch (err) {
-        console.error('Parse error:', err);
-        return res.status(400).send('Invalid data string format');
-    }
-
-    const { id, size, battery } = dataArray;
-    const type = 0;
-    const firstHop = metadata[0];
-    const { latitude: lat, longitude: lng } = firstHop.location;
-
-    const rawTime = req.body.received_at || firstHop.time || new Date().toISOString();
-    const time = new Date(rawTime);
-
-    if (
-        id   == null ||
-        size == null ||
-        lat  == null ||
-        lng  == null ||
-        !time
-    ) {
-        return res.status(400).send('Missing parsed or metadata fields');
-    }
-
-    try {
-        const defaultType = 0;
-
-        await pool.query(`
-            INSERT INTO device_list (id, device_name, lat, lng, type, battery, created_at, updated_at)
+function insertOrUpdateDeviceInDeviceList(data) {
+    return pool.query(`
+            INSERT INTO device_list (id, device_name, dev_eui, device_id, application_id, battery, created_at, updated_at)
             VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
             ON CONFLICT (id)
                 DO UPDATE SET
                   battery = EXCLUDED.battery,
                   updated_at = CURRENT_TIMESTAMP
-        `, [id, deviceName, lat, lng, defaultType, battery + "%"]);
+        `, [data.id, data.device_name, data.dev_eui, data.device_id, data.application_id, data.battery]);
+}
 
+function insertMessageLog(data, jsonMessage) {
+    return pool.query(`
+        INSERT INTO message_log (
+            device_id,
+            device_name,
+            dev_eui,
+            message_json,
+            size,
+            type,
+            lat,
+            lng,
+            altitude,
+            device_timestamp,
+            eu_device_timestamp
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+    `, [
+        data.id,
+        data.device_name,
+        data.dev_eui,
+        JSON.stringify(jsonMessage),
+        data.size,
+        0,
+        data.lat,
+        data.lng,
+        data.altitude,
+        DateTime.fromJSDate(data.time).setZone("utc").toISO(),
+        DateTime.fromJSDate(data.time).setZone("Europe/Ljubljana").toISO()
+    ]);
+}
 
+async function sendEmails(data) {
+    const result = await pool.query(`SELECT email FROM subscription_list`);
+    const emails = result.rows.map(row => row.email);
 
-        await pool.query(
-            `INSERT INTO message_log (
-                device_id,
-                device_name,
-                message_json,
-                size,
-                type,
-                lat,
-                lng,
-                device_timestamp,
-                battery
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-            [id, deviceName, JSON.stringify(jsonMessage), size, defaultType, lat, lng, time, battery + "%"]
-        );
-
-        lastJson = jsonMessage;
-        fs.writeFileSync(path.join(__dirname, 'lastReceivedMessage.json'), JSON.stringify(lastJson, null, 2));
-
-        if (size === 0) {
-            console.log(`No alert email sent: size ${size} (too small).`);
-            return res.send('Message logged without alert (size 0)');
-        }
-
-        const result = await pool.query(`SELECT email FROM subscription_list`);
-        const emails = result.rows.map(row => row.email);
-
-        const subject = `🪨RockyTracker Alert: Update from ${deviceName}`;
-        const html = `
+    const subject = `🪨RockyTracker Alert: Update from ${data.device_name}`;
+    const html = `
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -199,10 +187,10 @@ router.post('/update/upcoming', async (req, res) => {
                 <div class="space"><br><br><br><br></div>
                 <p>New active rockfall has been reported:</p>
                 <div class="space"><br><br></div>
-                <p><strong>Device:</strong> ${deviceName}</p>
-                <p><strong>Type:</strong> ${type === 0 ? 'Road' : 'Railroad'}</p>
-                <p><strong>Location:</strong> ${lat}, ${lng}</p>
-                <p><strong>Time:</strong> ${new Date(time).toLocaleString()}</p>
+                <p><strong>Device:</strong> ${data.device_name}</p>
+                <p><strong>Type:</strong> ${0 === 0 ? 'Road' : 'Railroad'}</p>
+                <p><strong>Location:</strong> ${data.lat}, ${data.lng}</p>
+                <p><strong>Time:</strong> ${new Date(data.time).toLocaleString()}</p>
                 <div class="space"><br><br><br><br></div>
                 <p> View on <a href="https://rockytracker.onrender.com" style="text-decoration:underline;color:#333333">RockyTracker map</a></p>
                 <div class="space"><br><br><br><br></div>
@@ -221,18 +209,62 @@ router.post('/update/upcoming', async (req, res) => {
 
         `;
 
-        for (const email of emails) {
-            try {
-                await transporter.sendMail({
-                    to: email,
-                    from: '"RockyTracker" <no-reply@rockytracker.com>',
-                    subject: subject,
-                    html: html
-                });
-            } catch (err) {
-                console.error(`Failed to send alert to ${email}:`, err.message);
-            }
+    for (const email of emails) {
+        try {
+            await transporter.sendMail({
+                to: email,
+                from: '"RockyTracker" <no-reply@rockytracker.com>',
+                subject: subject,
+                html: html
+            });
+        } catch (err) {
+            console.error(`Failed to send alert to ${email}:`, err.message);
         }
+    }
+}
+
+router.post('/update/upcoming', async (req, res) => {
+    const jsonMessage = req.body;
+
+    let data;
+    try {
+        data = getData(jsonMessage)
+    } catch (err) {
+        console.error('Parse error:', err);
+        return res.status(400).send('Invalid data string format');
+    }
+
+    if (!data || !jsonMessage) {
+        return res.status(400).send('Missing required fields');
+    }
+
+    if (
+        data.size == null ||
+        data.lat  == null ||
+        data.lng  == null ||
+        !data.time
+    ) {
+        return res.status(400).send('Missing parsed or metadata fields');
+    }
+
+    try {
+        const defaultType = 0;
+
+        await insertOrUpdateDeviceInDeviceList(data);
+
+
+
+        await insertMessageLog(data, jsonMessage)
+
+        lastJson = jsonMessage;
+        fs.writeFileSync(path.join(__dirname, 'lastReceivedMessage.json'), JSON.stringify(lastJson, null, 2));
+
+        if (data.size === 0) {
+            console.log(`No alert email sent: size ${data.size} (too small).`);
+            return res.send('Message logged without alert (size 0)');
+        }
+
+        await sendEmails(data)
 
         res.send('Message logged and alerts sent');
     } catch (err) {
