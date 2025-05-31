@@ -64,7 +64,7 @@ function initMap(types = ['street']) {
     navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;
 
-        if (userCircle.length <= 4) {
+        if (userCircle.length < 4) {
             for (var i = 0; i < 4; i++) {
                 const circle = L.circle([latitude, longitude], {
                     radius: 1250 * i,
@@ -116,8 +116,7 @@ function initMap(types = ['street']) {
                 .filter(entry => types.includes(typeLabels[entry.type]))
                 .forEach(entry => {
                     const icon = makeIcon(level2Css[riskLevel(entry.accident_occurrences)]);
-
-                    console.log(entry)
+                    
                     const formatter = new Intl.DateTimeFormat('en-GB', {
                         timeZone: 'Europe/Ljubljana',
                         year: 'numeric',
