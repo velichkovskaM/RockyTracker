@@ -107,7 +107,7 @@ function insertMessageLog(data, jsonMessage) {
 
 async function sendEmails(data, device) {
     const result = await pool.query(`SELECT email FROM subscription_list`);
-    const emails = result.rows.map(row => row.email);
+    const emails = result.rows.map(row => row.email); 
 
     const subject = `🪨RockyTracker Alert: Update from ${data.device_name}`;
     const html = `
@@ -257,9 +257,8 @@ router.post('/update/upcoming', async (req, res) => {
 
         await insertOrUpdateDeviceInDeviceList(data);
 
-        console.log(data.id)
-        device = await selectDevice(data.id)
-        console.log(device.rows[0].type)
+        const deviceData = await selectDevice(data.id)
+        device = deviceData.rows[0]
 
         await insertMessageLog(data, jsonMessage)
 
