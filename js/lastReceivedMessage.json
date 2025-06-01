@@ -1,0 +1,43 @@
+{
+  "end_device_ids": {
+    "device_id": "rockytracker",
+    "application_ids": {
+      "application_id": "rocky-tracker"
+    },
+    "dev_eui": "70B3D57ED0071834",
+    "join_eui": "13197332FFACFDAA",
+    "dev_addr": "260B496B"
+  },
+  "correlation_ids": [
+    "gs:uplink:01JVA09W0QEETVZ7CAF6T9PHD2"
+  ],
+  "received_at": "2025-05-30T11:26:34.783684331Z",
+  "uplink_message": {
+    "session_key_id": "AZbT+5N6gflnqR2Ud8TJUQ==",
+    "f_port": 8,
+    "f_cnt": 39,
+    "frm_payload": "aWQ90,size=2",
+    "decoded_payload": {
+      "data": "id=5,size=1,battery=30"
+    },
+    "rx_metadata": [
+      {
+        "gateway_ids": {
+          "gateway_id": "pileus-ljgrad",
+          "eui": "AC1F09FFFE187BAA"
+        },
+        "time": "2025-05-31T15:24:34.783684331Z",
+        "timestamp": 1748703330,
+        "rssi": -113,
+        "channel_rssi": -113,
+        "snr": -14,
+        "location": {
+          "latitude": 46.56,
+          "longitude": 15.6459,
+          "altitude": 400,
+          "source": "SOURCE_REGISTRY"
+        }
+      }
+    ]
+  }
+}
