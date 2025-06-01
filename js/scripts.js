@@ -126,7 +126,7 @@ function initMap(types = ['street']) {
                         second: '2-digit',
                     });
 
-                    if (!isNaN(entry.lat) && !isNaN(entry.lng)) {
+                if (!isNaN(entry.lat) && !isNaN(entry.lng) && entry.lat != null && entry.lng != null) {
 
                         L.marker([parseFloat(entry.lat), parseFloat(entry.lng)], {icon})
                             .bindPopup(`
